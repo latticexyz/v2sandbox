@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
-    "@latticexyz/network": "1.39.0",
+    "@latticexyz/network": "link:../../../mud/packages/network",
     "@latticexyz/recs": "1.39.0",
     "@latticexyz/services": "1.39.0",
     "@latticexyz/std-client": "1.39.0",
