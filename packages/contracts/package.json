@@ -5,13 +5,14 @@
   "private": true,
   "scripts": {
     "----- EXTERNAL -----": "---------------------------",
-    "prepare": "mud tablegen",
+    "prepare": "yarn tablegen",
     "devnode": "mud devnode",
     "test": "mud test",
     "types": "mud types",
-    "dev": "forge script script/Deploy.s.sol --broadcast --fork-url http://localhost:8545 --private-keys 0x733ad1797d0d71ceab7c17971f5635385716e55c46e06aa23fdb3d1426884957 --with-gas-price 0 -vvvv",
+    "dev": "yarn tablegen && forge script script/Deploy.s.sol --broadcast --fork-url http://localhost:8545 --private-keys 0x733ad1797d0d71ceab7c17971f5635385716e55c46e06aa23fdb3d1426884957 --with-gas-price 0 -vvvv",
     "deploy": "mud deploy-contracts",
     "lint": "yarn prettier && yarn solhint",
+    "tablegen": "mud tablegen",
     "----- INTERNAL -----": "---------------------------",
     "prettier": "prettier --write 'src/**/*.sol'",
     "solhint": "solhint --config ./.solhint.json 'src/**/*.sol' --fix"

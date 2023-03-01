@@ -20,16 +20,18 @@ const components = {
     },
     {
       metadata: {
-        contractId: "/counter",
+        contractId: "/counter/CounterTable",
       },
     }
   ),
 };
 
 // Components expose a stream that triggers when the component is updated.
-components.Counter.update$.subscribe(({ value }) => {
-  console.log("Counter updated", value);
-  document.getElementById("counter")!.innerHTML = String(value?.[0]?.[0]);
+components.Counter.update$.subscribe((update) => {
+  console.log("Counter updated", update);
+  document.getElementById("counter")!.innerHTML = String(
+    update.value?.[0]?.[0]
+  );
 });
 
 // Create a World contract instance

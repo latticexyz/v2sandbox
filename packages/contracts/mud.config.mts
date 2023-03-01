@@ -3,7 +3,6 @@ import { SchemaType } from "@latticexyz/schema-type";
 import { ethers } from "ethers";
 
 const config: MUDUserConfig = {
-  baseRoute: "/hello",
   worldPath: "./src/world",
   excludeSystems: ["System3", "System2"],
   overrideSystems: {
@@ -18,6 +17,7 @@ const config: MUDUserConfig = {
   },
   tables: {
     CounterTable: {
+      route: "/counter",
       schema: {
         value: SchemaType.UINT32,
       },
