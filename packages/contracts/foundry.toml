@@ -8,3 +8,10 @@ libs = ["../../node_modules", "../../../mud"]
 src = "src"
 test = "src/test"
 out = "out"
+extra_output_files = [
+  "abi",
+  "evm.bytecode"
+]
+
+[profile.lattice-testnet]
+eth_rpc_url = "https://follower.testnet-chain.linfra.xyz"

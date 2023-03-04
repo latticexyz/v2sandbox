@@ -1,18 +1,13 @@
 import { MUDUserConfig } from "@latticexyz/cli";
 import { SchemaType } from "@latticexyz/schema-type";
-import { ethers } from "ethers";
 
 const config: MUDUserConfig = {
-  worldPath: "./src/world",
   excludeSystems: ["System3", "System2"],
   overrideSystems: {
     System: {
-      route: "/mySystem",
+      route: "/system",
       openAccess: false,
-      accessList: ["IncrementSystem", ethers.Wallet.createRandom().address],
-    },
-    IncrementSystem: {
-      openAccess: true,
+      accessList: ["IncrementSystem"],
     },
   },
   tables: {
@@ -23,6 +18,7 @@ const config: MUDUserConfig = {
       },
     },
   },
+  deploymentInfoDirectory: "./asdf",
 };
 
 export default config;
