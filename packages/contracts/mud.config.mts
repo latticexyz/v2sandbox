@@ -3,22 +3,22 @@ import { SchemaType } from "@latticexyz/schema-type";
 
 const config: MUDUserConfig = {
   excludeSystems: ["System3", "System2"],
+  worldContractName: "CustomWorld",
   overrideSystems: {
-    System: {
-      route: "/system",
-      openAccess: false,
-      accessList: ["IncrementSystem"],
+    IncrementSystem: {
+      route: "/mud/increment",
+      openAccess: true,
     },
   },
   tables: {
     CounterTable: {
-      route: "/counter",
+      route: "/mud/counter",
       schema: {
         value: SchemaType.UINT32,
       },
     },
   },
-  deploymentInfoDirectory: "./asdf",
+  deploymentInfoDirectory: "./mud-deployments",
 };
 
 export default config;
