@@ -21,11 +21,11 @@ library IncrementSystemWrapper {
    * This function has almost the same interface as `IncrementSystem.increment`, but accepts an additional `world` argument
    * that is used to call the IncrementSystem contract.
    */
-  function increment(World world, uint32 amount) public returns (uint32) {
+  function increment(World world) public returns (uint32) {
     bytes memory result = world.call(
       "mud",
       "increment",
-      abi.encodeWithSelector(IncrementSystemSource.increment.selector, amount)
+      abi.encodeWithSelector(IncrementSystemSource.increment.selector)
     );
     return abi.decode(result, (uint32));
   }
@@ -35,7 +35,7 @@ library IncrementSystemWrapper {
    * which allows us to use a custom type with `using for global`, so the interface for consumers
    * is exactly like calling the `IncrementSystem.increment` function directly.
    */
-  function increment(SubWorld world, uint32 amount) public returns (uint32) {
-    return increment(World(SubWorld.unwrap(world)), amount);
+  function increment(SubWorld world) public returns (uint32) {
+    return increment(World(SubWorld.unwrap(world)));
   }
 }
