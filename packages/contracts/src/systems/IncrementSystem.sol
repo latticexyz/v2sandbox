@@ -9,9 +9,8 @@ contract IncrementSystem is System {
   function increment(uint32 amount) public returns (uint32) {
     uint32 counter = CounterTable.get(bytes32("singleton"));
     uint32 newValue = counter + amount;
-    // TODO: add suport for namespace/file the autogen tables
-    // CounterTable.set(bytes32("singleton"), amount);
-    World(msg.sender).setRecord("mud", "counter", new bytes32[](0), abi.encodePacked(uint32(newValue)));
+    CounterTable.set(bytes32("singleton"), newValue);
+    // World(msg.sender).setRecord("mud", "counter", new bytes32[](0), abi.encodePacked(uint32(newValue)));
     return amount;
   }
 }
