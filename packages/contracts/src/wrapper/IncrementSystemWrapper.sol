@@ -11,9 +11,9 @@ using IncrementSystemWrapper for SubWorld global;
  * IncrementSystemWrapper is a wrapper around the IncrementSystem contract,
  * that allows calling it via the World contract but keep the same interface
  * instead of manually encoding/decoding bytes and function selector.
- * 
+ *
  * This library can easily be auto-generated from the IncrementSystem contract abi and mud.config.mts (for routes).
- * 
+ *
  * See script/PostDeploy.s.sol for an example of how to use this library.
  */
 library IncrementSystemWrapper {
@@ -23,7 +23,8 @@ library IncrementSystemWrapper {
    */
   function increment(World world, uint32 amount) public returns (uint32) {
     bytes memory result = world.call(
-      "/mud/increment",
+      "mud",
+      "increment",
       abi.encodeWithSelector(IncrementSystemSource.increment.selector, amount)
     );
     return abi.decode(result, (uint32));

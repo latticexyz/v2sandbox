@@ -4,15 +4,16 @@ import { SchemaType } from "@latticexyz/schema-type";
 const config: MUDUserConfig = {
   excludeSystems: ["System3", "System2"],
   worldContractName: "CustomWorld",
+  namespace: "mud",
   overrideSystems: {
     IncrementSystem: {
-      route: "/mud/increment",
+      fileSelector: "increment",
       openAccess: true,
     },
   },
   tables: {
     CounterTable: {
-      route: "/mud/counter",
+      fileSelector: "counter",
       schema: {
         value: SchemaType.UINT32,
       },
