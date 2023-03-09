@@ -25,7 +25,7 @@ contract PostDeploy is Script {
 
     // Call increment on world via the IncrementSystemWrapper
     uint32 newValue = IncrementSystemWrapper.increment(World(worldAddress), 3);
-    console.log("Increment via SubWorld:", newValue);
+    console.log("Increment via World:", newValue);
 
     // Call increment on world via the IncrementSystemWrapper and SubWorld custom type
     SubWorld world = SubWorld.wrap(worldAddress);
