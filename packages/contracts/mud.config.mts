@@ -17,6 +17,13 @@ const config: MUDUserConfig = {
         value: SchemaType.UINT32,
       },
     },
+    PlayerProfile: {
+      route: "/mud/player",
+      schema: {
+        level: SchemaType.UINT32,
+        name: SchemaType.STRING,
+      },
+    },
   },
   deploymentInfoDirectory: "./mud-deployments",
 };

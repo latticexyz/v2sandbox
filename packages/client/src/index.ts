@@ -7,6 +7,7 @@ import { abi as WorldAbi } from "@latticexyz/world/abi/World.json";
 import { Contract, Wallet } from "ethers";
 import * as ethers from "ethers";
 import mudConfig from "contracts/mud.config.mjs";
+import { extractContractError } from "./extractContractError";
 
 // The world contains references to all entities, all components and disposers.
 const world = createWorld();
@@ -42,16 +43,21 @@ const sigHash = (signature: string) =>
 // Just for demonstration purposes: we create a global function that can be
 // called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
 (window as any).increment = async () => {
-  const txResult = await worldContract["call(string,bytes)"](
-    "/mud/increment",
-    sigHash("increment(uint32)"),
-    {
-      gasPrice: 0,
-      gasLimit: 1_000_000,
-    }
-  );
+  try {
+    const txResult = await worldContract["call(string,bytes)"](
+      "/mud/increment",
+      sigHash("increment()"),
+      {
+        gasPrice: 0,
+        gasLimit: 1_000_000,
+      }
+    );
 
-  await txResult.wait();
+    await txResult.wait();
+  } catch (error) {
+    console.error(extractContractError(error));
+    throw error;
+  }
 };
 
 // This is where the magic happens
