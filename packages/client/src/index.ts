@@ -1,33 +1,22 @@
 import { setupMUDNetwork } from "@latticexyz/std-client";
 import { createWorld } from "@latticexyz/recs";
 import { config } from "./config";
-import { Type, defineComponent } from "@latticexyz/recs";
+import { defineStoreComponents } from "@latticexyz/recs";
 import { World } from "@latticexyz/world/types/ethers-contracts/World";
 import { abi as WorldAbi } from "@latticexyz/world/abi/World.json";
 import { Contract, Wallet } from "ethers";
 import * as ethers from "ethers";
+import mudConfig from "../../contracts/mud.config.mjs";
 
 // The world contains references to all entities, all components and disposers.
 const world = createWorld();
 
 // Components contain the application state.
 // If a contractId is provided, MUD syncs the state with the corresponding table
-const components = {
-  Counter: defineComponent(
-    world,
-    {
-      0: Type.Number,
-    },
-    {
-      metadata: {
-        contractId: getTableId("mud", "counter"),
-      },
-    }
-  ),
-};
+const components = defineStoreComponents(world, mudConfig);
 
 // Components expose a stream that triggers when the component is updated.
-components.Counter.update$.subscribe((update) => {
+components.CounterTable.update$.subscribe((update) => {
   console.log("Counter updated", update);
   document.getElementById("counter")!.innerHTML = String(
     update.value?.[0]?.[0]
