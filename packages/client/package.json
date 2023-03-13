@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.29.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
   },
@@ -20,6 +24,7 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "@latticexyz/cli": "link:../../../mud/packages/cli",
     "@latticexyz/network": "link:../../../mud/packages/network",
+    "@latticexyz/react": "^1.41.0",
     "@latticexyz/recs": "link:../../../mud/packages/recs",
     "@latticexyz/services": "link:../../../mud/packages/services",
     "@latticexyz/std-client": "link:../../../mud/packages/std-client",
@@ -32,6 +37,7 @@
     "nice-grpc-web": "^2.0.1",
     "proxy-deep": "^3.1.1",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "threads": "^1.7.0"
   }
 }
