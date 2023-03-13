@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const App = ({ worldContract, components }: Props) => {
-  const counter = useComponentValue(components.Counter, singletonIndex);
+  const counter = useComponentValue(components.CounterTable, singletonIndex);
   return (
     <>
       <div>
