@@ -23,14 +23,6 @@ export const singletonIndex = world.registerEntity({ id: SingletonID });
 // If a contractId is provided, MUD syncs the state with the corresponding table
 export const components = defineStoreComponents(world, mudConfig);
 
-// Components expose a stream that triggers when the component is updated.
-components.CounterTable.update$.subscribe((update) => {
-  console.log("Counter updated", update);
-  document.getElementById("counter")!.innerHTML = String(
-    update.value?.[0]?.[0]
-  );
-});
-
 // Create a World contract instance
 export const worldContract = new Contract(
   config.worldAddress,
@@ -40,10 +32,6 @@ export const worldContract = new Contract(
     new ethers.providers.JsonRpcProvider(config.provider.jsonRpcUrl)
   )
 ) as World;
-
-// Just for demonstration purposes: we create a global function that can be
-// called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
-(window as any).increment = async () => {};
 
 // This is where the magic happens
 setupMUDNetwork<typeof components, {}>(config, world, components, {}).then(
