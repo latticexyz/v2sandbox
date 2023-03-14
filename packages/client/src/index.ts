@@ -17,9 +17,10 @@ const components = defineStoreComponents(world, mudConfig);
 
 // Components expose a stream that triggers when the component is updated.
 components.CounterTable.update$.subscribe((update) => {
-  console.log("Counter updated", update);
+  const [nextValue, prevValue] = update.value;
+  console.log("Counter updated", update, { nextValue, prevValue });
   document.getElementById("counter")!.innerHTML = String(
-    update.value?.[0]?.[0]
+    nextValue?.value ?? "unset"
   );
 });
 

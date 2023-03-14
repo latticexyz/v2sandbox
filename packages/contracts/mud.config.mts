@@ -1,7 +1,7 @@
 import { MUDUserConfig } from "@latticexyz/cli";
 import { SchemaType } from "@latticexyz/schema-type";
 
-const config: MUDUserConfig = {
+const config = {
   excludeSystems: ["System3", "System2"],
   worldContractName: "CustomWorld",
   namespace: "mud",
@@ -20,6 +20,6 @@ const config: MUDUserConfig = {
     },
   },
   deploymentInfoDirectory: "./mud-deployments",
-};
+} satisfies MUDUserConfig;
 
 export default config;
