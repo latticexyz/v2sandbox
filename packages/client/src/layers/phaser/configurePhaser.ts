@@ -30,7 +30,12 @@ export const phaserConfig = {
         },
       },
       maps: {},
-      sprites: {},
+      sprites: {
+        [Sprites.Soldier]: {
+          assetKey: Assets.MainAtlas,
+          frame: "sprites/soldier/idle/0.png",
+        },
+      },
       animations: [
         {
           key: Animations.SwordsmanIdle,

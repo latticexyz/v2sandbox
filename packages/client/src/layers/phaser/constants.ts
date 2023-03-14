@@ -9,7 +9,10 @@ export enum Maps {
 export enum Animations {
   SwordsmanIdle = "SwordsmanIdle",
 }
-export enum Sprites {}
+export enum Sprites {
+  Soldier,
+}
+
 export enum Assets {
   MainAtlas = "MainAtlas",
 }

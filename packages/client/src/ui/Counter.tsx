@@ -2,6 +2,8 @@ import { useComponentValue } from "@latticexyz/react";
 import { sigHash, toBytes16 } from "../utils";
 import { useMUD } from "../store";
 import { ClickWrapper } from "./theme/ClickWrapper";
+import { SpriteImage } from "./theme/SpriteImage";
+import { Sprites } from "../layers/phaser/constants";
 
 export const Counter = () => {
   const {
@@ -15,7 +17,7 @@ export const Counter = () => {
   const counter = useComponentValue(CounterTable, singletonEntity);
 
   return (
-    <ClickWrapper>
+    <ClickWrapper style={{ marginLeft: '10em', marginTop: '10em' }}>
       <div style={{ color: "white" }}>
         Counter: <span>{counter?.value ?? "??"}</span>
       </div>
@@ -39,8 +41,9 @@ export const Counter = () => {
           console.log(await txResult.wait());
         }}
       >
-        Increment
+        Add Solider
       </button>
+      <SpriteImage spriteKey={Sprites.Soldier} scale={2} />
     </ClickWrapper>
   );
 };
