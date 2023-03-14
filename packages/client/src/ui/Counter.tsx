@@ -1,20 +1,22 @@
-import { World } from "@latticexyz/recs";
-import { World as WorldContract } from "@latticexyz/world/types/ethers-contracts/World";
 import { useComponentValue } from "@latticexyz/react";
-import { components, singletonIndex } from ".";
-import { sigHash, toBytes16 } from "./utils";
+import { sigHash, toBytes16 } from "../utils";
+import { useMUD } from "../store";
+import { ClickWrapper } from "./theme/ClickWrapper";
 
-type Props = {
-  world: World;
-  worldContract: WorldContract;
-  components: typeof components;
-};
+export const Counter = () => {
+  const {
+    networkLayer: {
+      components: { CounterTable },
+      worldContract,
+      singletonEntity,
+    },
+  } = useMUD();
 
-export const App = ({ worldContract, components }: Props) => {
-  const counter = useComponentValue(components.CounterTable, singletonIndex);
+  const counter = useComponentValue(CounterTable, singletonEntity);
+
   return (
-    <>
-      <div>
+    <ClickWrapper>
+      <div style={{ color: "white" }}>
         Counter: <span>{counter?.value ?? "??"}</span>
       </div>
       <button
@@ -39,6 +41,6 @@ export const App = ({ worldContract, components }: Props) => {
       >
         Increment
       </button>
-    </>
+    </ClickWrapper>
   );
 };
