@@ -1,6 +1,7 @@
 import { createPhaserEngine } from "@latticexyz/phaserx";
 import { namespaceWorld } from "@latticexyz/recs";
 import { NetworkLayer } from "../network/createNetworkLayer";
+import { registerSystems } from "./systems";
 
 export type PhaserLayer = Awaited<ReturnType<typeof createPhaserLayer>>;
 type PhaserEngineConfig = Parameters<typeof createPhaserEngine>[0];
@@ -18,9 +19,14 @@ export const createPhaserLayer = async (
   } = await createPhaserEngine(phaserConfig);
   world.registerDisposer(disposePhaser);
 
-  return {
+  const layer = {
+    networkLayer,
     world,
     game,
     scenes,
   };
+
+  registerSystems(layer);
+
+  return layer;
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { SyncState } from "@latticexyz/network";
 import { LoadingBar } from "./LoadingBar";

@@ -5,15 +5,44 @@ import {
   defineMapConfig,
   defineCameraConfig,
 } from "@latticexyz/phaserx";
-import { Sprites, Assets, Maps, Scenes, TILE_HEIGHT, TILE_WIDTH, Animations } from "./constants";
+import {
+  Sprites,
+  Assets,
+  Maps,
+  Scenes,
+  TILE_HEIGHT,
+  TILE_WIDTH,
+  Animations,
+} from "./constants";
 
 export const phaserConfig = {
   sceneConfig: {
     [Scenes.Main]: defineSceneConfig({
-      assets: {},
+      assets: {
+        [Assets.MainAtlas]: {
+          type: AssetType.MultiAtlas,
+          key: Assets.MainAtlas,
+          // Add a timestamp to the end of the path to prevent caching
+          path: `/assets/atlases/atlas.json?timestamp=${Date.now()}`,
+          options: {
+            imagePath: "/assets/atlases/",
+          },
+        },
+      },
       maps: {},
       sprites: {},
-      animations: [],
+      animations: [
+        {
+          key: Animations.SwordsmanIdle,
+          assetKey: Assets.MainAtlas,
+          startFrame: 0,
+          endFrame: 3,
+          frameRate: 6,
+          repeat: -1,
+          prefix: "sprites/soldier/idle/",
+          suffix: ".png",
+        },
+      ],
       tilesets: {},
     }),
   },
