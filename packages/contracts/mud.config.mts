@@ -9,6 +9,7 @@ const config = {
     IncrementSystem: {
       fileSelector: "increment",
       openAccess: true,
+      access: [resolveAddress("IncrementSystem")],
     },
   },
   tables: {
@@ -17,9 +18,19 @@ const config = {
       schema: {
         value: SchemaType.UINT32,
       },
+      modules: ["ReverseMappingModule"],
     },
   },
+  modules: [{ name: "ReverseMappingModule", args: [resolveResourceSelector("CounterTable")], root: true }],
   deploymentInfoDirectory: "./mud-deployments",
 } satisfies MUDUserConfig;
 
 export default config;
+
+function resolveResourceSelector(name: string) {
+  return { type: "resolveResourceSelector", value: name };
+}
+
+function resolveAddress(name: string) {
+  return { type: "resolveAddress", value: name };
+}
