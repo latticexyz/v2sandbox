@@ -4,7 +4,7 @@ import glob from "glob";
 import ejs from "ejs";
 import path from "path";
 
-const tilemaps = glob.sync("./tiled/*.tsx");
+const tilemaps = glob.sync("./tilesets/*.tsx");
 enum PropertyName {
   Name = "name",
   Frame = "frame",
@@ -238,7 +238,9 @@ const buildAnimatedTileList = (tileObjects: Tile[]) => {
 
 const tilemapObjects = tilemaps.map(processTilemap);
 
-const TILEMAP_TYPE_TEMPLATE = `<% if(tiles){ -%>
+const TILEMAP_TYPE_TEMPLATE = `// GENERATED CODE - DO NOT MODIFY BY HAND
+
+<% if(tiles){ -%>
 export enum Tileset {
 <% tiles.forEach(tile => { -%>
   <%= tile.name %> = <%= tile.index %>,
@@ -284,7 +286,7 @@ const tilemapTypes = tilemapObjects.map((t) => ({
 }));
 for (const tilemapType of tilemapTypes) {
   fs.writeFileSync(
-    path.join(__dirname, "..", "types", `${tilemapType.name}.ts`),
+    path.join(__dirname, "..", "..", "client", "src", "artTypes", `${tilemapType.name}.ts`),
     tilemapType.type
   );
 }
