@@ -19,92 +19,58 @@ import { LastHit } from "./../../tables/LastHit.sol";
 library ShipPrototype {
   function create(
     bytes32 key,
-    uint256 _value_Ship,
-    PositionData memory _data_Position,
-    uint32 _value_Rotation,
-    uint256 _value_OwnedBy,
-    uint32 _value_Speed,
-    uint32 _value_Length,
-    uint32 _value_Health,
-    uint32 _value_MaxHealth,
-    uint256 _value_Booty
+    uint256 _Ship,
+    PositionData memory _Position,
+    uint32 _Rotation,
+    uint256 _OwnedBy,
+    uint32 _Speed,
+    uint32 _Length,
+    uint32 _Health,
+    uint32 _MaxHealth,
+    uint256 _Booty
   ) internal {
-    Ship.set(key, _value_Ship);
-
-    Position.set(key, _data_Position);
-
-    Rotation.set(key, _value_Rotation);
-
+    Ship.set(key, _Ship);
+    Position.set(key, _Position);
+    Rotation.set(key, _Rotation);
     SailPosition.set(key, 2);
-
-    OwnedBy.set(key, _value_OwnedBy);
-
-    Speed.set(key, _value_Speed);
-
-    Length.set(key, _value_Length);
-
-    Health.set(key, _value_Health);
-
-    MaxHealth.set(key, _value_MaxHealth);
-
+    OwnedBy.set(key, _OwnedBy);
+    Speed.set(key, _Speed);
+    Length.set(key, _Length);
+    Health.set(key, _Health);
+    MaxHealth.set(key, _MaxHealth);
     Kills.set(key, 0);
-
-    Booty.set(key, _value_Booty);
-
+    Booty.set(key, _Booty);
     LastHit.set(key, 0x60D);
   }
 
   function destroy(bytes32 key) internal {
     Ship.deleteRecord(key);
-
     Position.deleteRecord(key);
-
     Rotation.deleteRecord(key);
-
     SailPosition.deleteRecord(key);
-
     OwnedBy.deleteRecord(key);
-
     Speed.deleteRecord(key);
-
     Length.deleteRecord(key);
-
     Health.deleteRecord(key);
-
     MaxHealth.deleteRecord(key);
-
     Kills.deleteRecord(key);
-
     Booty.deleteRecord(key);
-
     LastHit.deleteRecord(key);
   }
 
   function getTableIds() internal pure returns (uint256[] memory _tableIds) {
     _tableIds = new uint256[](12);
-
     _tableIds[0] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Ship"))));
-
     _tableIds[1] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Position"))));
-
     _tableIds[2] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Rotation"))));
-
     _tableIds[3] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("SailPosition"))));
-
     _tableIds[4] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("OwnedBy"))));
-
     _tableIds[5] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Speed"))));
-
     _tableIds[6] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Length"))));
-
     _tableIds[7] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Health"))));
-
     _tableIds[8] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("MaxHealth"))));
-
     _tableIds[9] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Kills"))));
-
     _tableIds[10] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Booty"))));
-
     _tableIds[11] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("LastHit"))));
   }
 }

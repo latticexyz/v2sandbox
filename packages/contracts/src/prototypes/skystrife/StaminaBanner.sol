@@ -11,27 +11,20 @@ import { AuraStaminaMod } from "./../../tables/AuraStaminaMod.sol";
 library StaminaBanner {
   function create(bytes32 key) internal {
     ItemType.set(key, ItemTypes.StaminaBanner);
-
     AuraEmitter.set(key, 0);
-
     AuraStaminaMod.set(key, 500);
   }
 
   function destroy(bytes32 key) internal {
     ItemType.deleteRecord(key);
-
     AuraEmitter.deleteRecord(key);
-
     AuraStaminaMod.deleteRecord(key);
   }
 
   function getTableIds() internal pure returns (uint256[] memory _tableIds) {
     _tableIds = new uint256[](3);
-
     _tableIds[0] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("ItemType"))));
-
     _tableIds[1] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("AuraEmitter"))));
-
     _tableIds[2] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("AuraStaminaMod"))));
   }
 }

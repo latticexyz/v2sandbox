@@ -12,46 +12,33 @@ import { Range } from "./../../tables/Range.sol";
 library CannonPrototype {
   function create(
     bytes32 key,
-    uint256 _value_Cannon,
-    uint256 _value_OwnedBy,
-    uint32 _value_Rotation,
-    uint32 _value_Firepower,
-    uint32 _value_Range
+    uint256 _Cannon,
+    uint256 _OwnedBy,
+    uint32 _Rotation,
+    uint32 _Firepower,
+    uint32 _Range
   ) internal {
-    Cannon.set(key, _value_Cannon);
-
-    OwnedBy.set(key, _value_OwnedBy);
-
-    Rotation.set(key, _value_Rotation);
-
-    Firepower.set(key, _value_Firepower);
-
-    Range.set(key, _value_Range);
+    Cannon.set(key, _Cannon);
+    OwnedBy.set(key, _OwnedBy);
+    Rotation.set(key, _Rotation);
+    Firepower.set(key, _Firepower);
+    Range.set(key, _Range);
   }
 
   function destroy(bytes32 key) internal {
     Cannon.deleteRecord(key);
-
     OwnedBy.deleteRecord(key);
-
     Rotation.deleteRecord(key);
-
     Firepower.deleteRecord(key);
-
     Range.deleteRecord(key);
   }
 
   function getTableIds() internal pure returns (uint256[] memory _tableIds) {
     _tableIds = new uint256[](5);
-
     _tableIds[0] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Cannon"))));
-
     _tableIds[1] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("OwnedBy"))));
-
     _tableIds[2] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Rotation"))));
-
     _tableIds[3] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Firepower"))));
-
     _tableIds[4] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Range"))));
   }
 }

@@ -9,35 +9,25 @@ import { Portable } from "./../../tables/Portable.sol";
 import { Substance } from "./../../tables/Substance.sol";
 
 library SubstanceBlock {
-  function create(bytes32 key, PositionData memory _data_Position, uint32 _value_Matter) internal {
-    Position.set(key, _data_Position);
-
-    Matter.set(key, _value_Matter);
-
+  function create(bytes32 key, PositionData memory _Position, uint32 _Matter) internal {
+    Position.set(key, _Position);
+    Matter.set(key, _Matter);
     Portable.set(key, true);
-
     Substance.set(key, 100);
   }
 
   function destroy(bytes32 key) internal {
     Position.deleteRecord(key);
-
     Matter.deleteRecord(key);
-
     Portable.deleteRecord(key);
-
     Substance.deleteRecord(key);
   }
 
   function getTableIds() internal pure returns (uint256[] memory _tableIds) {
     _tableIds = new uint256[](4);
-
     _tableIds[0] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Position"))));
-
     _tableIds[1] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Matter"))));
-
     _tableIds[2] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Portable"))));
-
     _tableIds[3] = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("Substance"))));
   }
 }
