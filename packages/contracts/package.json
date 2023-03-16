@@ -9,11 +9,12 @@
     "devnode": "mud devnode",
     "test": "mud test",
     "types": "mud types",
-    "dev": "yarn tablegen && yarn deploy",
+    "dev": "yarn tablegen && yarn worldgen && yarn deploy",
     "deploy": "mud deploy-v2 --clean",
     "deploy:testnet": "mud deploy-v2 --profile=lattice-testnet",
     "lint": "yarn prettier && yarn solhint",
     "tablegen": "mud tablegen",
+    "worldgen": "mud worldgen",
     "----- INTERNAL -----": "---------------------------",
     "prettier": "prettier --write 'src/**/*.sol'",
     "solhint": "solhint --config ./.solhint.json 'src/**/*.sol' --fix"

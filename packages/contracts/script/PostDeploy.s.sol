@@ -6,6 +6,7 @@ import { IncrementSystemWrapper, SubWorld } from "../src/wrapper/IncrementSystem
 import { World } from "@latticexyz/world/src/World.sol";
 import { CounterTable, CounterTableTableId } from "../src/tables/CounterTable.sol";
 import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
+import { IWorld } from "../src/world/IWorld.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -38,6 +39,9 @@ contract PostDeploy is Script {
     SubWorld subWorld = SubWorld.wrap(worldAddress);
     newValue = subWorld.increment();
     console.log("Increment via SubWorld:", newValue);
+
+    // Call increment on the world via the registered function selector
+    newValue = IWorld(worldAddress).mud_increment_increment();
 
     // ------------ MORE SANITY CHECKS -------------
 
