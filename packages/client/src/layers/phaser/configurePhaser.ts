@@ -5,6 +5,8 @@ import {
   defineMapConfig,
   defineCameraConfig,
 } from "@latticexyz/phaserx";
+import worldTileset from "../../../public/assets/tilesets/world.png";
+import { TileAnimations, Tileset } from "../../artTypes/world";
 import {
   Sprites,
   Assets,
@@ -15,10 +17,33 @@ import {
   Animations,
 } from "./constants";
 
+const ANIMATION_INTERVAL = 200;
+
+const mainMap = defineMapConfig({
+  chunkSize: TILE_WIDTH * 64, // tile size * tile amount
+  tileWidth: TILE_WIDTH,
+  tileHeight: TILE_HEIGHT,
+  backgroundTile: [Tileset.Grass],
+  animationInterval: ANIMATION_INTERVAL,
+  tileAnimations: TileAnimations,
+  layers: {
+    layers: {
+      Background: { tilesets: ["Default"] },
+      Foreground: { tilesets: ["Default"] },
+    },
+    defaultLayer: "Background",
+  },
+});
+
 export const phaserConfig = {
   sceneConfig: {
     [Scenes.Main]: defineSceneConfig({
       assets: {
+        [Assets.Tileset]: {
+          type: AssetType.Image,
+          key: Assets.Tileset,
+          path: worldTileset,
+        },
         [Assets.MainAtlas]: {
           type: AssetType.MultiAtlas,
           key: Assets.MainAtlas,
@@ -29,7 +54,9 @@ export const phaserConfig = {
           },
         },
       },
-      maps: {},
+      maps: {
+        [Maps.Main]: mainMap,
+      },
       sprites: {
         [Sprites.Soldier]: {
           assetKey: Assets.MainAtlas,
@@ -48,7 +75,13 @@ export const phaserConfig = {
           suffix: ".png",
         },
       ],
-      tilesets: {},
+      tilesets: {
+        Default: {
+          assetKey: Assets.Tileset,
+          tileWidth: TILE_WIDTH,
+          tileHeight: TILE_HEIGHT,
+        },
+      },
     }),
   },
   scale: defineScaleConfig({

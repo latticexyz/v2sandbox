@@ -15,6 +15,7 @@ export enum Sprites {
 
 export enum Assets {
   MainAtlas = "MainAtlas",
+  Tileset = "Tileset",
 }
 
 export const TILE_HEIGHT = 32;

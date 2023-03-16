@@ -5,9 +5,10 @@
   "types": "./types",
   "scripts": {
     "generate-multiatlas-sprites": "node ./scripts/cli.js --project ./config-sprites.json",
-    "generate": "yarn generate-multiatlas-sprites",
     "compile-extensions": "tsc ./tiled/extensions/*.ts --outDir ./tiled/extensions/",
-    "export-tiled-types": "ts-node ./scripts/export-tiled-types.ts"
+    "export-tiled-types": "ts-node ./scripts/export-tiled-types.ts && cp tilesets/images/* ../client/public/assets/tilesets/",
+
+    "generate": "yarn generate-multiatlas-sprites && yarn export-tiled-types"
   },
   "devDependencies": {
     "@mapeditor/tiled-api": "^1.8.2",
