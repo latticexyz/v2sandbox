@@ -21,6 +21,11 @@ export const createNetworkLayer = async () => {
   // If a contractId is provided, MUD syncs the state with the corresponding table
   const components = defineStoreComponents(world, mudConfig);
 
+  // Give components a Human-readable ID
+  Object.entries(components).forEach(([name, component]) => {
+    component.id = name;
+  });
+
   const worldContract = new Contract(
     config.worldAddress,
     WorldAbi,

@@ -11,6 +11,7 @@ const createContainer = () => {
   container.style.width = "100%";
   container.style.height = "100%";
   container.style.pointerEvents = "all";
+  container.style.overflow = "hidden";
   return container;
 };
 

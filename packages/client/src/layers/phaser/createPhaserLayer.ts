@@ -19,11 +19,14 @@ export const createPhaserLayer = async (
   } = await createPhaserEngine(phaserConfig);
   world.registerDisposer(disposePhaser);
 
+  const components = {};
+
   const layer = {
     networkLayer,
     world,
     game,
     scenes,
+    components,
   };
 
   registerSystems(layer);
