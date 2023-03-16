@@ -5,6 +5,7 @@ import "forge-std/Script.sol";
 import { IncrementSystemWrapper, SubWorld } from "../src/wrapper/IncrementSystemWrapper.sol";
 import { World } from "@latticexyz/world/src/World.sol";
 import { CounterTableTableId } from "../src/tables/CounterTable.sol";
+import { getKeysWithValue } from "@latticexyz/world/src/modules/reversemapping/getKeysWithValue.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -15,6 +16,7 @@ contract PostDeploy is Script {
     vm.startBroadcast(deployerPrivateKey);
 
     // --------------- SANITY CHECKS ----------------
+    World world = World(worldAddress);
 
     // Sanity check 1: the world address should be the same as the one we just deployed
     console.log("Deployed world: ", worldAddress);
@@ -23,7 +25,7 @@ contract PostDeploy is Script {
     new TestContract().test();
 
     // Sanity check 3: check the key schema
-    bytes32 schema = World(worldAddress).getKeySchema(CounterTableTableId).unwrap();
+    bytes32 schema = world.getKeySchema(CounterTableTableId).unwrap();
     console.logBytes32(schema);
 
     // ------------------ EXAMPLES ------------------
@@ -33,9 +35,15 @@ contract PostDeploy is Script {
     console.log("Increment via World:", newValue);
 
     // Call increment on world via the IncrementSystemWrapper and SubWorld custom type
-    SubWorld world = SubWorld.wrap(worldAddress);
-    newValue = world.increment();
+    SubWorld subWorld = SubWorld.wrap(worldAddress);
+    newValue = subWorld.increment();
     console.log("Increment via SubWorld:", newValue);
+
+    // ------------ MORE SANITY CHECKS -------------
+
+    // Sanity check 4: check the CounterTable has a reverse mapping hooked up
+    bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, abi.encodePacked(newValue));
+    console.log("Number of keys with newValue (should be 1):", keysWithValue.length);
 
     vm.stopBroadcast();
   }
