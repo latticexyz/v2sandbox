@@ -4,7 +4,7 @@ pragma solidity >=0.8.0;
 import "forge-std/Script.sol";
 import { IncrementSystemWrapper, SubWorld } from "../src/wrapper/IncrementSystemWrapper.sol";
 import { World } from "@latticexyz/world/src/World.sol";
-import { CounterTableTableId } from "../src/tables/CounterTable.sol";
+import { CounterTable, CounterTableTableId } from "../src/tables/CounterTable.sol";
 import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
 
 contract PostDeploy is Script {
@@ -42,7 +42,7 @@ contract PostDeploy is Script {
     // ------------ MORE SANITY CHECKS -------------
 
     // Sanity check 4: check the CounterTable has a reverse mapping hooked up
-    bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, abi.encodePacked(newValue));
+    bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, CounterTable.encode(newValue));
     console.log("Number of keys with newValue (should be 1):", keysWithValue.length);
     require(keysWithValue.length == 1, "Expected 1 key with value 2");
 
