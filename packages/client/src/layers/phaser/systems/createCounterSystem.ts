@@ -22,7 +22,7 @@ export const createCounterSystem = (layer: PhaserLayer) => {
       id: "sprite",
       once: (sprite) => {
         sprite.play(Animations.SwordsmanIdle);
-        sprite.setPosition(counter.value * 32 + 50, 50);
+        sprite.setPosition((counter.value % 10) * 32 + 50, 50 * Math.floor(counter.value / 10));
       },
     });
   });
