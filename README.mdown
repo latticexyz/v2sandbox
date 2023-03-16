@@ -1,0 +1,22 @@
+# MUD2 2D Game Starter Kit
+
+This is an opinionated starter kit for making 2D browser games using MUD. The aim is to provide the fastest way to get started making a game with minimal setup.
+
+## Technologies Used
+- [MUD](https://github.com/latticexyz/mud): Ethereum development framework
+- [Phaser](https://github.com/photonstorm/phaser): 2D game engine
+- React: UI
+
+## Dependencies
+- `node` - Used to run the client. [Install](https://nodejs.org/en/download/)
+- `yarn` - Used to install dependencies. [Install](https://yarnpkg.com/en/docs/install)
+- `foundry` - Used to run your local node, run tests, and deploy contracts. [Install](https://github.com/foundry-rs/foundry#installation)
+
+## Getting Started
+
+1. Run `yarn` to install dependencies
+2. Run `yarn dev`. This will:
+    - start a local anvil node
+    - deploy your contracts
+    - compile and start the client
+    - open the client in your browser
