@@ -21,7 +21,7 @@ const config = {
   },
   modules: [
     {
-      name: "ReverseMappingModule",
+      name: "KeysWithValueModule",
       root: true,
       args: [resolveTableId("CounterTable")],
     },

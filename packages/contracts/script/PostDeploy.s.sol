@@ -5,7 +5,7 @@ import "forge-std/Script.sol";
 import { IncrementSystemWrapper, SubWorld } from "../src/wrapper/IncrementSystemWrapper.sol";
 import { World } from "@latticexyz/world/src/World.sol";
 import { CounterTableTableId } from "../src/tables/CounterTable.sol";
-import { getKeysWithValue } from "@latticexyz/world/src/modules/reversemapping/getKeysWithValue.sol";
+import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
