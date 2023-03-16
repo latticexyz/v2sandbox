@@ -11,6 +11,7 @@
     "types": "mud types",
     "dev": "yarn tablegen && yarn deploy",
     "deploy": "mud deploy-v2 --clean",
+    "deploy:testnet": "mud deploy-v2 --profile=lattice-testnet",
     "lint": "yarn prettier && yarn solhint",
     "tablegen": "mud tablegen",
     "----- INTERNAL -----": "---------------------------",
