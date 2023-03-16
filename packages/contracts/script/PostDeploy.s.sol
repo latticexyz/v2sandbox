@@ -44,6 +44,7 @@ contract PostDeploy is Script {
     // Sanity check 4: check the CounterTable has a reverse mapping hooked up
     bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, abi.encodePacked(newValue));
     console.log("Number of keys with newValue (should be 1):", keysWithValue.length);
+    require(keysWithValue.length == 1, "Expected 1 key with value 2");
 
     vm.stopBroadcast();
   }
