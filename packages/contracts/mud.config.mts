@@ -1,4 +1,4 @@
-import { MUDUserConfig } from "@latticexyz/cli";
+import { MUDUserConfig, resolveTableId } from "@latticexyz/cli";
 import { SchemaType } from "@latticexyz/schema-type";
 
 const config = {
@@ -9,7 +9,6 @@ const config = {
     IncrementSystem: {
       fileSelector: "increment",
       openAccess: true,
-      access: [resolveAddress("IncrementSystem")],
     },
   },
   tables: {
@@ -18,19 +17,16 @@ const config = {
       schema: {
         value: SchemaType.UINT32,
       },
-      modules: ["ReverseMappingModule"],
     },
   },
-  modules: [{ name: "ReverseMappingModule", args: [resolveResourceSelector("CounterTable")], root: true }],
+  modules: [
+    {
+      name: "ReverseMappingModule",
+      root: true,
+      args: [resolveTableId("CounterTable")],
+    },
+  ],
   deploymentInfoDirectory: "./mud-deployments",
 } satisfies MUDUserConfig;
 
 export default config;
-
-function resolveResourceSelector(name: string) {
-  return { type: "resolveResourceSelector", value: name };
-}
-
-function resolveAddress(name: string) {
-  return { type: "resolveAddress", value: name };
-}
