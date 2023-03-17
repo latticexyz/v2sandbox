@@ -52,12 +52,16 @@ const worldContract = new Contract(
 };
 
 // This is where the magic happens
-setupMUDNetwork<typeof components, {}>(config, world, components, {}).then(
-  ({ startSync }) => {
-    // After setting up the network, we can tell MUD to start the synchronization process.
-    startSync();
-  }
-);
+setupMUDNetwork<typeof components, {}>(
+  config,
+  world,
+  components,
+  {},
+  { fetchSystemCalls: true, mudConfig }
+).then(({ startSync, v2SystemCallStreams }) => {
+  // After setting up the network, we can tell MUD to start the synchronization process.
+  startSync();
+});
 
 function toBytes16(input: string) {
   if (input.length > 16) throw new Error("String does not fit into 16 bytes");

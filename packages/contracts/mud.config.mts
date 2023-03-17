@@ -9,6 +9,7 @@ const config = {
     IncrementSystem: {
       fileSelector: "increment",
       openAccess: true,
+      enableCallStream: true,
     },
   },
   tables: {
