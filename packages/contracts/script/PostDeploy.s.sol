@@ -41,7 +41,8 @@ contract PostDeploy is Script {
     console.log("Increment via SubWorld:", newValue);
 
     // Call increment on the world via the registered function selector
-    // newValue = IWorld(worldAddress).mud_increment_increment();
+    newValue = IWorld(worldAddress).mud_increment_increment();
+    console.log("Increment via IWorld:", newValue);
 
     // ------------ MORE SANITY CHECKS -------------
 
