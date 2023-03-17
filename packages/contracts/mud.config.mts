@@ -1,7 +1,6 @@
-import { MUDUserConfig } from "@latticexyz/cli";
-import { SchemaType } from "@latticexyz/schema-type";
+import { mudConfig } from "@latticexyz/cli";
 
-const config = {
+export default mudConfig({
   excludeSystems: ["System3", "System2"],
   worldContractName: "CustomWorld",
   namespace: "mud",
@@ -15,11 +14,9 @@ const config = {
     CounterTable: {
       fileSelector: "counter",
       schema: {
-        value: SchemaType.UINT32,
+        value: "uint32",
       },
     },
   },
   deploymentInfoDirectory: "./mud-deployments",
-} satisfies MUDUserConfig;
-
-export default config;
+});
