@@ -1,4 +1,5 @@
-import { MUDUserConfig, resolveTableId } from "@latticexyz/cli";
+import { MUDUserConfig } from "@latticexyz/cli";
+import { resolveTableId } from "@latticexyz/cli/src/config/dynamicResolution";
 import { SchemaType } from "@latticexyz/schema-type";
 
 const config = {
