@@ -3,9 +3,10 @@ cache/
 node_modules/
 bindings/
 artifacts/
-deployments
 abi/
 types/
 broadcast/
 .env
-mud-deployments
+
+deploys
+!deploys/4242/latest.json
