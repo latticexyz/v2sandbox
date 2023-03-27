@@ -1,4 +1,4 @@
-import { mudConfig } from "@latticexyz/cli";
+import { mudConfig, resolveTableId } from "@latticexyz/cli";
 
 export default mudConfig({
   excludeSystems: ["System3", "System2"],
@@ -18,5 +18,12 @@ export default mudConfig({
       },
     },
   },
+  modules: [
+    {
+      name: "KeysWithValueModule",
+      root: true,
+      args: [resolveTableId("CounterTable")],
+    },
+  ],
   deploymentInfoDirectory: "./mud-deployments",
 });
