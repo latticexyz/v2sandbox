@@ -1,5 +1,4 @@
-import { mudConfig } from "@latticexyz/cli";
-import { resolveTableId } from "@latticexyz/cli/src/config/dynamicResolution";
+import { mudConfig, resolveTableId } from "@latticexyz/cli";
 
 export default mudConfig({
   excludeSystems: ["System3", "System2"],

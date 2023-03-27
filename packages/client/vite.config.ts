@@ -26,4 +26,7 @@ export default defineConfig({
       "@improbable-eng/grpc-web",
     ],
   },
+  define: {
+    "process.env": {},
+  },
 });
