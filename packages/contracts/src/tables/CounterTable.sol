@@ -70,6 +70,11 @@ library CounterTable {
     StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
   }
 
+  /** Tightly pack full data using this table's schema */
+  function encode(uint32 value) internal pure returns (bytes memory) {
+    return abi.encodePacked(value);
+  }
+
   /* Delete all data for given keys */
   function deleteRecord(bytes32 key) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);

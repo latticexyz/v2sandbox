@@ -6,6 +6,10 @@ export default defineConfig({
       strict: false,
     },
   },
+  // define: {
+  //   "process.env": process.env,
+  //   global: {},
+  // },
   optimizeDeps: {
     esbuildOptions: {
       target: "es2020",

@@ -59,6 +59,11 @@ setupMUDNetwork<typeof components, {}>(
   {},
   { fetchSystemCalls: true, mudConfig }
 ).then(({ startSync, v2SystemCallStreams }) => {
+  console.log("got v2 call streams", v2SystemCallStreams);
+  // TODO: figure out why types aren't coming through
+  v2SystemCallStreams?.["IncrementSystem"].subscribe((update) => {
+    console.log("got IncrementSystem update", update);
+  });
   // After setting up the network, we can tell MUD to start the synchronization process.
   startSync();
 });
