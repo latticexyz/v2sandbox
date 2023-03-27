@@ -25,6 +25,7 @@
     "@latticexyz/std-client": "link:../../../mud/packages/std-client",
     "@latticexyz/utils": "link:../../../mud/packages/utils",
     "@latticexyz/world": "link:../../../mud/packages/world",
+    "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",
     "ethers": "^5.7.2",
     "mobx": "^6.7.0",

@@ -25,5 +25,5 @@ export default mudConfig({
       args: [resolveTableId("CounterTable")],
     },
   ],
-  deploymentInfoDirectory: "./mud-deployments",
+  deploymentInfoDirectory: "../client/src/deployments",
 });
