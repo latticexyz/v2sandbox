@@ -1,6 +1,7 @@
 import { mudConfig, resolveTableId } from "@latticexyz/cli";
 
 export default mudConfig({
+  deploymentInfoDirectory: "./deploys",
   excludeSystems: ["System3", "System2"],
   worldContractName: "CustomWorld",
   namespace: "mud",
@@ -25,5 +26,4 @@ export default mudConfig({
       args: [resolveTableId("CounterTable")],
     },
   ],
-  deploymentInfoDirectory: "../client/src/deployments",
 });
