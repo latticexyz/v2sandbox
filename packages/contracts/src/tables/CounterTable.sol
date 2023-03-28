@@ -11,6 +11,7 @@ import { IStore } from "@latticexyz/store/src/IStore.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { StoreCore } from "@latticexyz/store/src/StoreCore.sol";
 import { Bytes } from "@latticexyz/store/src/Bytes.sol";
+import { Memory } from "@latticexyz/store/src/Memory.sol";
 import { SliceLib } from "@latticexyz/store/src/Slice.sol";
 import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
@@ -68,6 +69,11 @@ library CounterTable {
     _primaryKeys[0] = bytes32((key));
 
     StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
+  }
+
+  /** Tightly pack full data using this table's schema */
+  function encode(uint32 value) internal view returns (bytes memory) {
+    return abi.encodePacked(value);
   }
 
   /* Delete all data for given keys */
