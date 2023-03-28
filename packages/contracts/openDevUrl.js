@@ -14,10 +14,12 @@ const openUrl = (url) => {
 
 const openDevUrl = () => {
   try {
-    const deploymentData = JSON.parse(fs.readFileSync('./mud-deployments/mud-deployment-latest.json', 'utf8'));
-    const { worldAddress, blockNumber, rpc } = deploymentData;
-
+    const deploymentData = JSON.parse(fs.readFileSync('./deploys/31337/latest.json', 'utf8'));
+    const { worldAddress, blockNumber } = deploymentData;
+    const rpc = 'http://localhost:8545';
+    
     const url = `http://localhost:3000/?worldAddress=${worldAddress}&chainId=31337&initialBlockNumber=${blockNumber}&rpc=${rpc}&wsRpc=${rpc.replace('http', 'ws')}&snapshot=&faucet=&dev=true`;
+
     console.log("Opening dev url: ", url);
     openUrl(url);
   } catch(e) {
