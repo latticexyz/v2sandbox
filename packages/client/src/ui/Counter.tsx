@@ -1,5 +1,4 @@
 import { useComponentValue } from "@latticexyz/react";
-import { sigHash, toBytes16 } from "../utils";
 import { useMUD } from "../store";
 import { ClickWrapper } from "./theme/ClickWrapper";
 import { SpriteImage } from "./theme/SpriteImage";
