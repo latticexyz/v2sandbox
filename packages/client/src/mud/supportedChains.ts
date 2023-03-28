@@ -1,6 +1,8 @@
 import type { Chain } from "@wagmi/chains";
+import { foundry } from "@wagmi/chains";
 
-// TODO: move this to a chains/config package
+// TODO: move this to MUD chains/config?
+
 export const latticeTestnet = {
   name: "Lattice Testnet",
   id: 4242,
@@ -16,4 +18,6 @@ export const latticeTestnet = {
       webSocket: ["wss://follower.testnet-chain.linfra.xyz"],
     },
   },
-} satisfies Chain;
+} as const satisfies Chain;
+
+export const supportedChains: Chain[] = [foundry, latticeTestnet];

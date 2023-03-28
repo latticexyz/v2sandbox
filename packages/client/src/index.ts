@@ -1,19 +1,7 @@
-import { setupMUDNetwork } from "@latticexyz/std-client";
-import { createWorld } from "@latticexyz/recs";
-import { config } from "./config";
-import { defineStoreComponents } from "@latticexyz/recs";
-import { abi as WorldAbi } from "../../contracts/out/world/IWorld.sol/IWorld.json";
-import { IWorld } from "../../contracts/types/ethers-contracts/IWorld";
-import { Contract, Wallet } from "ethers";
-import * as ethers from "ethers";
-import mudConfig from "../../contracts/mud.config.mjs";
+import { IWorld__factory } from "../../contracts/types/ethers-contracts/factories/IWorld__factory";
+import { setup } from "./mud/setup";
 
-// The world contains references to all entities, all components and disposers.
-const world = createWorld();
-
-// Components contain the application state.
-// If a contractId is provided, MUD syncs the state with the corresponding table
-const components = defineStoreComponents(world, mudConfig);
+const { components, networkConfig, network } = await setup();
 
 // Components expose a stream that triggers when the component is updated.
 components.CounterTable.update$.subscribe((update) => {
@@ -25,14 +13,13 @@ components.CounterTable.update$.subscribe((update) => {
 });
 
 // Create a World contract instance
-const worldContract = new Contract(
-  config.worldAddress,
-  WorldAbi,
-  new Wallet(
-    config.privateKey!,
-    new ethers.providers.JsonRpcProvider(config.provider.jsonRpcUrl)
-  )
-) as IWorld;
+const signer = network.signer.get();
+if (!signer) throw new Error("No signer");
+
+const worldContract = IWorld__factory.connect(
+  networkConfig.worldAddress,
+  signer
+);
 
 // Just for demonstration purposes: we create a global function that can be
 // called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
@@ -45,11 +32,3 @@ const worldContract = new Contract(
   console.log(txResult);
   console.log(await txResult.wait());
 };
-
-// This is where the magic happens
-setupMUDNetwork<typeof components, {}>(config, world, components, {}).then(
-  ({ startSync }) => {
-    // After setting up the network, we can tell MUD to start the synchronization process.
-    startSync();
-  }
-);
