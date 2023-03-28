@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "----- EXTERNAL -----": "---------------------------",
+    "init": "yarn tablegen && yarn build && yarn worldgen && yarn worldtypes",
     "prepare": "yarn tablegen && yarn worldgen && yarn worldtypes",
+    "build": "forge clean && forge build",
     "devnode": "mud devnode",
     "test": "echo todo",
     "dev": "yarn deploy",
