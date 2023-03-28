@@ -14,7 +14,8 @@ export async function setup() {
     networkConfig,
     world,
     contractComponents,
-    {} as never
+    {} as never,
+    { syncThread: "main" }
   );
 
   result.startSync();
