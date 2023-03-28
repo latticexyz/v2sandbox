@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useNetworkLayer } from "./hooks/useNetworkLayer";
 import { useStore } from "../store";
-import { PhaserLayer } from "./PhaserLayer";
 import { UIRoot } from "./UIRoot";
+import { usePhaserLayer } from "./hooks/usePhaserLayer";
 
 export const App = () => {
   const networkLayer = useNetworkLayer();
+  const { phaserLayer } = usePhaserLayer({ networkLayer });
 
   useEffect(() => {
     if (networkLayer) {
@@ -13,11 +14,11 @@ export const App = () => {
     }
   }, [networkLayer]);
 
-  return (
-    <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
-      <PhaserLayer networkLayer={networkLayer} />
+  useEffect(() => {
+    if (phaserLayer) {
+      useStore.setState({ phaserLayer });
+    }
+  }, [phaserLayer]);
 
-      <UIRoot />
-    </div>
-  );
+  return <UIRoot />;
 };

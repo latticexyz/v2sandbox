@@ -6,16 +6,18 @@ export default mudConfig({
   worldContractName: "CustomWorld",
   namespace: "mud",
   overrideSystems: {
-    IncrementSystem: {
-      fileSelector: "increment",
+    MoveSystem: {
+      fileSelector: "move",
       openAccess: true,
     },
   },
   tables: {
-    CounterTable: {
-      fileSelector: "counter",
+    PositionTable: {
+      fileSelector: "position",
       schema: {
-        value: "uint32",
+        x: "int32",
+        y: "int32",
+        z: "int32",
       },
     },
   },
@@ -23,7 +25,7 @@ export default mudConfig({
     {
       name: "KeysWithValueModule",
       root: true,
-      args: [resolveTableId("CounterTable")],
+      args: [resolveTableId("PositionTable")],
     },
   ],
 });

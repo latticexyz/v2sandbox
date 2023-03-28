@@ -1,8 +1,7 @@
 import React from "react";
 import { useStore } from "../store";
-import { Controls } from "./Controls";
-import { Counter } from "./Counter";
 import { ECSBrowser } from "./ECSBrowser";
+import { GameBoard } from "./GameBoard";
 import { LoadingScreen } from "./LoadingScreen";
 import { Wrapper } from "./Wrapper";
 
@@ -20,9 +19,8 @@ export const UIRoot = () => {
     <Wrapper>
       <LoadingScreen />
       <ECSBrowser />
-      <Controls />
 
-      <Counter />
+      <GameBoard />
     </Wrapper>
   );
 };

@@ -2,6 +2,7 @@ import { createStore } from "zustand/vanilla";
 import createReactStore from "zustand";
 import { NetworkLayer } from "./layers/network/createNetworkLayer";
 import { PhaserLayer } from "./layers/phaser/createPhaserLayer";
+import { getComponentValue } from "@latticexyz/recs";
 
 export type Store = {
   networkLayer: NetworkLayer | null;

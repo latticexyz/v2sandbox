@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import useResizeObserver, { ResizeHandler } from "use-resize-observer";
 import { throttle } from "lodash";
 import { createPhaserLayer } from "../../layers/phaser/createPhaserLayer";
@@ -25,7 +31,7 @@ export const usePhaserLayer = ({ networkLayer }: Props) => {
 
   const { phaserLayerPromise, container } = useMemo(() => {
     if (!networkLayer) return { phaserLayerPromise: null, container: null };
-    
+
     const container = createContainer();
     if (parentRef.current) {
       parentRef.current.appendChild(container);
@@ -48,25 +54,7 @@ export const usePhaserLayer = ({ networkLayer }: Props) => {
     // We don't want width/height to recreate phaser layer, so we ignore linter
   }, [networkLayer]);
 
-  useEffect(() => {
-    return () => {
-      phaserLayerPromise?.then((phaserLayer) => phaserLayer.world.dispose());
-      container?.remove();
-    };
-  }, [container, phaserLayerPromise]);
-
   const phaserLayer = usePromiseValue(phaserLayerPromise);
-
-  const onResize = useMemo<ResizeHandler>(() => {
-    return throttle(({ width, height }) => {
-      setSize({ width: width ?? 0, height: height ?? 0 });
-    }, 500);
-  }, []);
-
-  useResizeObserver({
-    ref: container,
-    onResize,
-  });
 
   const ref = useCallback(
     (el: HTMLElement | null) => {
