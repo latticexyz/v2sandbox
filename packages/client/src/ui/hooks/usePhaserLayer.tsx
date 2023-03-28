@@ -1,12 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import useResizeObserver, { ResizeHandler } from "use-resize-observer";
-import { throttle } from "lodash";
+import React, { useMemo, useRef, useState } from "react";
 import { createPhaserLayer } from "../../layers/phaser/createPhaserLayer";
 import { NetworkLayer } from "../../layers/network/createNetworkLayer";
 import { usePromiseValue } from "./usePromiseValue";
@@ -27,9 +19,9 @@ type Props = {
 
 export const usePhaserLayer = ({ networkLayer }: Props) => {
   const parentRef = useRef<HTMLElement | null>(null);
-  const [{ width, height }, setSize] = useState({ width: 0, height: 0 });
+  const [{ width, height }] = useState({ width: 0, height: 0 });
 
-  const { phaserLayerPromise, container } = useMemo(() => {
+  const { phaserLayerPromise } = useMemo(() => {
     if (!networkLayer) return { phaserLayerPromise: null, container: null };
 
     const container = createContainer();
@@ -56,19 +48,5 @@ export const usePhaserLayer = ({ networkLayer }: Props) => {
 
   const phaserLayer = usePromiseValue(phaserLayerPromise);
 
-  const ref = useCallback(
-    (el: HTMLElement | null) => {
-      parentRef.current = el;
-      if (container) {
-        if (parentRef.current) {
-          parentRef.current.appendChild(container);
-        } else {
-          container.remove();
-        }
-      }
-    },
-    [container]
-  );
-
-  return useMemo(() => ({ ref, phaserLayer }), [ref, phaserLayer]);
+  return useMemo(() => ({ phaserLayer }), [phaserLayer]);
 };

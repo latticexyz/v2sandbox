@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
-    "@latticexyz/cli": "^1.41.0",
     "@latticexyz/ecs-browser": "^1.41.0",
     "@latticexyz/network": "^1.41.0",
     "@latticexyz/phaserx": "^1.41.0",
@@ -33,7 +32,6 @@
     "@latticexyz/recs": "^1.41.0",
     "@latticexyz/services": "^1.41.0",
     "@latticexyz/std-client": "^1.41.0",
-    "@latticexyz/utils": "^1.41.0",
     "@latticexyz/world": "^1.41.0",
     "@react-three/fiber": "^8.12.0",
     "@types/three": "^0.149.0",
@@ -53,7 +51,6 @@
     "styled-components": "^5.3.9",
     "threads": "^1.7.0",
     "three": "^0.150.1",
-    "use-resize-observer": "^9.1.0",
     "zustand": "^4.3.6"
   }
 }
