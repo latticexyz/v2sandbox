@@ -8,7 +8,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     esbuildOptions: {
-      target: "es2020",
+      target: "es2022",
     },
     exclude: ["@latticexyz/network"],
     include: [
@@ -25,6 +25,14 @@ export default defineConfig({
       "nice-grpc-web",
       "@improbable-eng/grpc-web",
     ],
+  },
+  build: {
+    rollupOptions: {
+      // TODO: revisit this config after splitting out mud config dependencies
+      // from the cli package so we don't need to bundle the cli package
+      external: ["chalk", "locate-path", "path-exists", "find-up"],
+    },
+    target: "es2022",
   },
   define: {
     "process.env": {},
