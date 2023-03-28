@@ -2,13 +2,9 @@ import { setupMUDNetwork } from "@latticexyz/std-client";
 import { createWorld } from "@latticexyz/recs";
 import { config } from "./config";
 import { defineStoreComponents } from "@latticexyz/recs";
-import { World } from "@latticexyz/world/types/ethers-contracts/World";
-import { abi as WorldAbi } from "@latticexyz/world/abi/World.json";
-import { Contract, Wallet } from "ethers";
-import { ethers } from "ethers";
 import mudConfig from "../../../../contracts/mud.config.mjs";
 import { SingletonID } from "@latticexyz/network";
-import { getBurnerWallet } from "../../getBurnerWallet";
+import { IWorld__factory } from "../../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 
 export type NetworkLayer = Awaited<ReturnType<typeof createNetworkLayer>>;
 
@@ -26,16 +22,18 @@ export const createNetworkLayer = async () => {
     component.id = name;
   });
 
-  const worldContract = new Contract(
-    config.worldAddress,
-    WorldAbi,
-    new Wallet(
-      getBurnerWallet(),
-      new ethers.providers.JsonRpcProvider(config.provider.jsonRpcUrl)
-    )
-  ) as World;
+  const networkSetupResult = await setupMUDNetwork<typeof components, {}>(
+    config,
+    world,
+    components,
+    {} as never,
+    { syncThread: "main" }
+  );
 
-  const networkSetupResult = await setupMUDNetwork<typeof components, {}>(config, world, components, {});
+  const signer = networkSetupResult.network.signer.get();
+  if (!signer) throw new Error("No signer");
+
+  const worldContract = IWorld__factory.connect(config.worldAddress, signer);
 
   networkSetupResult.startSync();
 

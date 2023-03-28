@@ -27,18 +27,8 @@ export const Counter = () => {
           event.preventDefault();
 
           // NOTE: this will change soon and will be replaced by a more user friendly API
-          const txResult = await worldContract["call"](
-            toBytes16("mud"),
-            toBytes16("increment"),
-            sigHash("increment()"),
-            {
-              gasPrice: 0,
-              gasLimit: 1_000_000,
-            }
-          );
-
-          console.log(txResult);
-          console.log(await txResult.wait());
+          const txResult = await worldContract.mud_increment_increment({ gasLimit: 1_000_000 });
+          await txResult.wait();
         }}
       >
         Add Solider
