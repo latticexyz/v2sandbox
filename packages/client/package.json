@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "initialize": "yarn build",
+    "initialize": "yarn build:tsgen && yarn build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
