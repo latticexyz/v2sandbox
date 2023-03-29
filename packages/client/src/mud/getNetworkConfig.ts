@@ -10,24 +10,22 @@ type NetworkConfig = SetupContractConfig & {
 export async function getNetworkConfig(): Promise<NetworkConfig> {
   const params = new URLSearchParams(window.location.search);
 
-  const chainId = Number(
-    params.get("chainId") || import.meta.env.VITE_CHAIN_ID
+  const chain = supportedChains.find(
+    (c) => c.id === import.meta.env.VITE_CHAIN_ID
   );
-  if (!chainId) {
-    throw new Error("No chainId provided");
-  }
-
-  const chain = supportedChains.find((c) => c.id === chainId);
   if (!chain) {
-    throw new Error(`Chain ${chainId} not found`);
+    throw new Error(`Chain ${import.meta.env.VITE_CHAIN_ID} not found`);
   }
 
   const deploy = await import(
-    `../../../contracts/deploys/${chainId}/latest.json`
+    `../../../contracts/deploys/${import.meta.env.VITE_CHAIN_ID}/latest.json`
   );
+
   if (!deploy) {
     throw new Error(
-      `No deployment found for chain ${chainId}. Did you run \`mud deploy\`?`
+      `No deployment found for chain ${
+        import.meta.env.VITE_CHAIN_ID
+      }. Did you run \`mud deploy\`?`
     );
   }
 
@@ -43,12 +41,12 @@ export async function getNetworkConfig(): Promise<NetworkConfig> {
       syncInterval: 5000,
     },
     provider: {
-      chainId,
+      chainId: import.meta.env.VITE_CHAIN_ID,
       jsonRpcUrl: params.get("rpc") ?? chain.rpcUrls.default.http[0],
       wsRpcUrl: params.get("wsRpc") ?? chain.rpcUrls.default.webSocket?.[0],
     },
     privateKey: burnerWallet().value,
-    chainId,
+    chainId: import.meta.env.VITE_CHAIN_ID,
     snapshotServiceUrl: params.get("snapshot") ?? undefined,
     faucetServiceUrl: params.get("faucet") ?? undefined,
     worldAddress,
