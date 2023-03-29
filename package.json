@@ -6,7 +6,9 @@
     "packages/client"
   ],
   "scripts": {
-    "prepare": "yarn workspaces run init",
+    "prepare": "yarn prepare:client",
+    "prepare:client": "yarn workspace client run prepare",
+    "prepare:contracts": "yarn workspace contracts run prepare",
     "dev": "run-pty % yarn dev:node % yarn dev:client % yarn dev:contracts",
     "dev:client": "yarn workspace client run dev",
     "dev:node": "yarn workspace contracts run devnode",

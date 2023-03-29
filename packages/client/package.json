@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "init": "yarn build",
+    "prepare": "yarn workspace contracts prepare && yarn build",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
