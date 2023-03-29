@@ -20,6 +20,6 @@ export default defineConfig({
     target: "es2022",
   },
   define: {
-    process: { env: {} },
+    "process.env": {},
   },
 });
