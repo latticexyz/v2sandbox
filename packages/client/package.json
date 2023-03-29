@@ -7,7 +7,9 @@
   "scripts": {
     "init": "yarn build",
     "dev": "vite",
-    "build": "vite build",
+    "build": "yarn build:tsgen && yarn build:vite",
+    "build:tsgen": "mud tsgen --configPath ../contracts/mud.config.mts --out ./src/mud",
+    "build:vite": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {
