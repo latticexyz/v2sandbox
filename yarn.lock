@@ -482,17 +482,17 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@latticexyz/cli@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-2.0.0-alpha.0.tgz#da8273374062077b824eeaf161e767019463d4f4"
-  integrity sha512-XRC6zImDZgKJPkr49YX60/s38j8JXMBgNZI7hArf7dMd6+4+gA/wfJ/84+HyggCSpj8Y8NLbmaabZt74TEcrZA==
+"@latticexyz/cli@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-1.41.1-alpha.41.tgz#ded1607cd8ff2e10ec3824fb4c0d54f2b71f703d"
+  integrity sha512-LaTGcT1zlMM93DJjiekDLPYvSqyYx80e0Eoxh5mJZ5mJbN6NHdwkgAM2pzT4+GDsoYfBIEcX5T+9T177zEd8xA==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.15.0"
-    "@latticexyz/schema-type" "^2.0.0-alpha.0"
-    "@latticexyz/services" "^2.0.0-alpha.0"
-    "@latticexyz/solecs" "^2.0.0-alpha.0"
-    "@latticexyz/std-contracts" "^2.0.0-alpha.0"
+    "@latticexyz/schema-type" "^1.41.1-alpha.41+efdfeb310"
+    "@latticexyz/services" "^1.41.1-alpha.41+efdfeb310"
+    "@latticexyz/solecs" "^1.41.1-alpha.41+efdfeb310"
+    "@latticexyz/std-contracts" "^1.41.1-alpha.41+efdfeb310"
     "@solidity-parser/parser" "^0.16.0"
     "@typechain/ethers-v5" "^10.1.1"
     chalk "^5.0.1"
@@ -519,64 +519,64 @@
     zod "^3.21.4"
     zod-validation-error "^1.0.1"
 
-"@latticexyz/network@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-2.0.0-alpha.0.tgz#d3c9e31c125865716e56e5c9fc53b876f67c21af"
-  integrity sha512-fsbYo0XZN5spGeRsnSVK6h47iWcTwnYmrlFayy3ejzjrY19io2hHBoqJTvTozurrk3VN6kopolJ896skQbTWZQ==
+"@latticexyz/network@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-1.41.1-alpha.41.tgz#1a1da0b301f4f7826ef6152faf291f1f08fdc7c0"
+  integrity sha512-IP/mEVkH6oiodmteUz778KkfbSfyI9wvzN6kuFyQj6JhHf96KbNKQ21LJLLvw+GI6AH8EbEndjgvvyziLkq6rQ==
   dependencies:
     debug "^4.3.4"
     lodash "^4.17.21"
 
-"@latticexyz/recs@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-2.0.0-alpha.0.tgz#042578d5efd3a051e47fc3fbb7c84c8aa2f1b2e4"
-  integrity sha512-xfxY8mqnf3JtG+F8hdGund7ipuTE/CSCsuiErN/y08bBPMIVgSm+HSXe/1i/+oCGp8Y0jUzkYrKVqPwrTJjjTQ==
+"@latticexyz/recs@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-1.41.1-alpha.41.tgz#12f2311857f18c4900b072df198628f9ce4a78a1"
+  integrity sha512-yPX7Ee6Sc+Os69QoCMa8h86WTqhNwihsDXqV3eCvxjlX19rLOZQGNMpkHpBwcnfyNggyPNeZ6ovAmBCy2YFsfA==
 
-"@latticexyz/schema-type@2.0.0-alpha.0", "@latticexyz/schema-type@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.0.tgz#eff223a6d1f9bf586284c329c27d3f51f02fcc08"
-  integrity sha512-ZWhpGZaV1rO0wMCXwNEZNfDSx1IvtGgloI8yZ/5akGG87Y1PyBBBqd4Wel2/yOSUPF0j/cVHnL0+A7on65VpBw==
+"@latticexyz/schema-type@1.41.1-alpha.41+efdfeb310", "@latticexyz/schema-type@^1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-1.41.1-alpha.41.tgz#b0ac95e5b2b98952056b90c1569fc2322bfbb692"
+  integrity sha512-GAB3lstI+4eEh0gWN2IX43z5fUdluk7jsBq1lK61U9v5xDnPFHzkzypZCEqVNf9j0qdgt3+21iIOjIp6AdICzw==
 
-"@latticexyz/services@2.0.0-alpha.0", "@latticexyz/services@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.0.tgz#d3d8b10850eae07d39cebf519bfe9f74c1446acf"
-  integrity sha512-RQgurpSDs7DM1zhULGB/DlCxFTixKTtpXupeR0DON6HnhAfR7X4EB9Dy8IWmlcuu7lTF/0DBmmqh8xcdXgh8DA==
+"@latticexyz/services@1.41.1-alpha.41+efdfeb310", "@latticexyz/services@^1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-1.41.1-alpha.41.tgz#e8ebd164de3b5040ac27b5b6b7b3fb82974e34ec"
+  integrity sha512-aYUrZQlOsQHZjHSVk567Q8YQswk/DY/25bp5ZZbJdH14ODyEFOk6dmjUwMlm1AuM8y6BEwyN3Z+74sjC5PEbXQ==
   dependencies:
     long "^5.2.1"
     nice-grpc-common "^2.0.0"
     protobufjs "^7.1.2"
 
-"@latticexyz/solecs@2.0.0-alpha.0", "@latticexyz/solecs@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.0.tgz#a647d916108a0e5c80d3ca6afb9e2c734645c0a6"
-  integrity sha512-1+pMhz3wn4/m/9rNSUagfhmSmBX+YOExZf4uHPQU7VljyyG8ovbjkLpehOHo3f12fzkibAOAz08FV0dKlk2A2g==
+"@latticexyz/solecs@1.41.1-alpha.41+efdfeb310", "@latticexyz/solecs@^1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-1.41.1-alpha.41.tgz#8f62c8b4d251d136c6f930a1e7802c522f33b2f5"
+  integrity sha512-SsNTc/oePcKS+Kx/KjW4350Kw4rkAk4I4PsMyBYEAsdMHE6auDNZgMFeOGSXcKVe7q1K0IWE0WA8xRtrAmMNJQ==
 
-"@latticexyz/std-client@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-2.0.0-alpha.0.tgz#6a3939d52a98126a81a5aaa67c03d13d5f45bfea"
-  integrity sha512-CpQgodlA9guLiyL7vFKAZDOJf/UUH6jTKAUbjd2XZsJgk2FbejBrkpKW73rFvZyCW0quKM9IqLwOBFfmc0w5UQ==
+"@latticexyz/std-client@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-1.41.1-alpha.41.tgz#ce0bdfd513b149be51d579f08cd72b032a6c33a5"
+  integrity sha512-k14uCDFgInXHI0aC9kD0F41vAJJGea/S46ub0wLymSkvnaljS6cY3Q62zHTZaH8OXajCD7br+7NELTb1P4Qtgg==
 
-"@latticexyz/std-contracts@2.0.0-alpha.0", "@latticexyz/std-contracts@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.0.tgz#c49417e74d28fee3c87b85c03b216f3bcd43e5f0"
-  integrity sha512-fWG6vsHDNegKeJI/X5kuSmvQmLL+7Nb0gKvw1LLXmEShelzRHG2kPj4yK6Kk2VDyuAItPkygpMv7jCO90JqRmw==
+"@latticexyz/std-contracts@1.41.1-alpha.41+efdfeb310", "@latticexyz/std-contracts@^1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-1.41.1-alpha.41.tgz#8e14990f728ab86f0eab4b6bfa3335b58398b774"
+  integrity sha512-aXBobOyDMGWfDmMe9pK0F2sLz19srrG87CclAKNb05sZf7XDxu46bNMiWF7IZ4vdKCvbnJST5mYi/9Kl+wESDQ==
 
-"@latticexyz/store@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-2.0.0-alpha.0.tgz#9ede0e8f62d909eb494e1e623dd605f91db2e849"
-  integrity sha512-iF8jdmY73uWbsQ6O4NM/ZapETdYoUb7csjQFgS0eL7olqTUrlL+Kx4F2cpIJ3oat1+pOPoHxxI4mps0kUhVIgQ==
+"@latticexyz/store@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-1.41.1-alpha.41.tgz#fa9661b063c997bd65b657de0c34e691f73e34b1"
+  integrity sha512-kCqr7xFSQhHltlLZuhP8JEXsHbczWlWZPXUR+i//paaSp/vS1L8yTw1ZblSPj9iU8C1oYIIni0l+RspULCITEg==
 
-"@latticexyz/utils@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-2.0.0-alpha.0.tgz#eebe1c80b1c17f913a80367edf6687f32a195fef"
-  integrity sha512-Q7Q+Y1+Q/FzBPH1cCU0b8a7z05egmBig/LtKB08RzwEzkfoJyS0Xga/QbLrjvFBHacV/aBnaKQTW9x5ddRX/3w==
+"@latticexyz/utils@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-1.41.1-alpha.41.tgz#1f56d5383069c6e4b1f9d4b406caf68689855fad"
+  integrity sha512-yc4iTK8Mf5riPBRt9PoXYMqdkVRi0W6+YmtY9DibcEWypu0YMSXSIatj3b/UNbBirx7qh0bmnPIc78MnqpMvLg==
   dependencies:
     typedoc-plugin-markdown "^3.13.6"
 
-"@latticexyz/world@2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-2.0.0-alpha.0.tgz#9203f049248ed04b1f3af6848dbdfc8637434a17"
-  integrity sha512-rdKpc3yuTJBAnuPDCbqokt0TwTL4pnJ9WR8dYtmtChUA4KLXiv93XK2hO2a7bLZc9PHAp/KOgffWkGbpLp7uHg==
+"@latticexyz/world@1.41.1-alpha.41+efdfeb310":
+  version "1.41.1-alpha.41"
+  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-1.41.1-alpha.41.tgz#742b1e38c9da389261b9de33ef0da211a2230b27"
+  integrity sha512-l7VsfEAAnkeKpZwEOWZdEBkPvE2AwU9cyg8GDaGs6yzYuxgcPb84EN2FG1vC5820FRI5KDyQI8YRT9lADlEzew==
 
 "@morgan-stanley/ts-mocking-bird@^0.6.2":
   version "0.6.4"
