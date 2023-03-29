@@ -1,6 +1,7 @@
-import { setupMUDNetwork } from "@latticexyz/std-client";
+import { setupMUDV2Network } from "@latticexyz/std-client";
 import { getNetworkConfig } from "./getNetworkConfig";
-import { contractComponents, clientComponents } from "./components";
+import { defineContractComponents } from "./contractComponents";
+import { clientComponents } from "./clientComponents";
 import { world } from "./world";
 import { EntityID } from "@latticexyz/recs";
 import { createFaucetService, SingletonID } from "@latticexyz/network";
@@ -9,14 +10,14 @@ import { utils } from "ethers";
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
 export async function setup() {
+  const contractComponents = defineContractComponents(world);
   const networkConfig = await getNetworkConfig();
-  const result = await setupMUDNetwork<typeof contractComponents, never>(
+  const result = await setupMUDV2Network<typeof contractComponents>({
     networkConfig,
     world,
     contractComponents,
-    {} as never,
-    { syncThread: "main" }
-  );
+    syncThread: "main"
+  });
 
   result.startSync();
 
