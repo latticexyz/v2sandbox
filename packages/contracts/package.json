@@ -8,6 +8,7 @@
     "init": "yarn tablegen && yarn build && yarn worldgen && yarn worldtypes",
     "prepare": "yarn tablegen && yarn worldgen && yarn worldtypes",
     "devnode": "yarn mud devnode",
+    "build": "forge clean && forge build",
     "test": "echo todo",
     "dev": "yarn deploy",
     "deploy": "yarn prepare && yarn mud deploy-v2",
