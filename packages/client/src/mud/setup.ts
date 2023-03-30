@@ -68,22 +68,17 @@ export async function setup() {
     options?: {
       retryCount?: number;
     }
-  ) => Promise<{ hash: string; tx: ReturnType<C[F]> }>;
+  ) => Promise<ReturnType<C[F]>>;
 
   function bindFastTxExecute<C extends Contract>(
     contract: C
   ): BoundFastTxExecuteFn<C> {
-    return async function <F extends keyof C>(
-      func: F,
-      args: Parameters<C[F]>,
-      options: {
-        retryCount?: number;
-      } = { retryCount: 0 }
-    ): Promise<{ hash: string; tx: ReturnType<C[F]> }> {
+    return async function (...args) {
       if (!fastTxExecutor) {
         throw new Error("no signer");
       }
-      return await fastTxExecutor.fastTxExecute(contract, func, args, options);
+      const { tx } = await fastTxExecutor.fastTxExecute(contract, ...args);
+      return await tx;
     };
   }
 
