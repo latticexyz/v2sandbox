@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "----- EXTERNAL -----": "---------------------------",
-    "initialize": "yarn tablegen && yarn build && yarn worldgen && yarn worldtypes",
-    "prepare": "yarn tablegen && yarn worldgen && yarn worldtypes",
+    "initialize": "yarn tablegen && yarn build && yarn worldgen && yarn worldtypes && yarn tsgen",
+    "prepare": "yarn tablegen && yarn worldgen && yarn worldtypes && yarn tsgen",
     "devnode": "mud devnode",
     "build": "forge clean && forge build",
     "test": "echo todo",
@@ -17,6 +17,7 @@
     "tablegen": "mud tablegen",
     "worldgen": "mud worldgen",
     "worldtypes": "rimraf types && (typechain --target=ethers-v5 out/IWorld.sol/IWorld.json || typechain --target=ethers-v5 out/world/IWorld.sol/IWorld.json)",
+    "tsgen": "mud tsgen --configPath mud.config.mts --out ../client/src/mud",
     "----- INTERNAL -----": "---------------------------",
     "prettier": "prettier --write 'src/**/*.sol'",
     "solhint": "solhint --config ./.solhint.json 'src/**/*.sol' --fix"
