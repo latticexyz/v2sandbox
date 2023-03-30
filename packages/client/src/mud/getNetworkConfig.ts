@@ -46,8 +46,15 @@ export async function getNetworkConfig(): Promise<NetworkConfig> {
     },
     privateKey: burnerWallet().value,
     chainId,
-    snapshotServiceUrl: params.get("snapshot") ?? undefined,
-    faucetServiceUrl: params.get("faucet") ?? undefined,
+    faucetServiceUrl:
+      params.get("faucet") ?? chainId === 4242
+        ? "https://faucet.testnet-mud-services.linfra.xyz"
+        : undefined,
+    snapshotServiceUrl:
+      params.get("snapshot") ?? chainId === 4242
+        ? "https://ecs-snapshot.testnet-mud-services.linfra.xyz"
+        : undefined,
+    // TODO: add mode
     worldAddress,
     initialBlockNumber:
       Number(params.get("initialBlockNumber")) || deploy.blockNumber || 0,
