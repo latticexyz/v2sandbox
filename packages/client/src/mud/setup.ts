@@ -7,10 +7,11 @@ import { world } from "./world";
 import { utils } from "ethers";
 import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 import {
-  defineQuery,
   getComponentValue,
   Has,
+  HasValue,
   overridableComponent,
+  runQuery,
 } from "@latticexyz/recs";
 import { awaitStreamValue, uuid } from "@latticexyz/utils";
 
@@ -61,7 +62,31 @@ export async function setup() {
   const components = {
     ...result.components,
     Position: overridableComponent(result.components.Position),
+    Player: overridableComponent(result.components.Player),
     ...clientComponents,
+  };
+
+  const wrapPosition = (x: number, y: number) => {
+    const mapConfig = getComponentValue(
+      components.MapConfig,
+      result.singletonEntity
+    );
+    if (!mapConfig) {
+      throw new Error("mapConfig no yet loaded or initialized");
+    }
+    return [
+      (x + mapConfig.width) % mapConfig.width,
+      (y + mapConfig.height) % mapConfig.height,
+    ];
+  };
+
+  const isObstructed = (x: number, y: number) => {
+    return (
+      runQuery([
+        Has(components.Obstruction),
+        HasValue(components.Position, { x, y }),
+      ]).size > 0
+    );
   };
 
   const moveTo = async (x: number, y: number) => {
@@ -69,26 +94,11 @@ export async function setup() {
       throw new Error("no player");
     }
 
-    const mapConfig = getComponentValue(
-      components.MapConfig,
-      result.singletonEntity
-    );
-    if (!mapConfig) {
-      console.warn("moveTo called before mapConfig loaded/initialized");
+    const [wrappedX, wrappedY] = wrapPosition(x, y);
+    if (isObstructed(wrappedX, wrappedY)) {
+      console.warn("cannot move to obstructed space");
       return;
     }
-
-    const wrappedX = (x + mapConfig.width) % mapConfig.width;
-    const wrappedY = (y + mapConfig.height) % mapConfig.height;
-
-    // const obstructed = runQuery([
-    //   Has(components.Obstruction),
-    //   HasValue(components.Position, { x: wrappedX, y: wrappedY }),
-    // ]);
-    // if (obstructed.size > 0) {
-    //   console.warn("cannot move to obstructed space");
-    //   return;
-    // }
 
     const inEncounter =
       getComponentValue(components.Encounter, result.playerEntity)?.value !=
@@ -105,10 +115,10 @@ export async function setup() {
     });
 
     try {
-      const tx = await worldContract.move(x, y, {
-        gasLimit: 1_000_000,
-        gasPrice: 0,
-      });
+      // Our system checks distance on the original/requested x,y and then wraps for us,
+      // so we'll pass the original x,y here.
+      // TODO: make the contract smarter about calculating wrapped distance
+      const tx = await worldContract.move(x, y, { gasPrice: 0 });
       await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
     } finally {
       components.Position.removeOverride(positionId);
@@ -132,6 +142,43 @@ export async function setup() {
     await moveTo(playerPosition.x + deltaX, playerPosition.y + deltaY);
   };
 
+  const spawn = async (x: number, y: number) => {
+    if (!result.playerEntity) {
+      throw new Error("no player");
+    }
+
+    const canSpawn =
+      getComponentValue(components.Player, result.playerEntity)?.value !== true;
+    if (!canSpawn) {
+      throw new Error("already spawned");
+    }
+
+    const [wrappedX, wrappedY] = wrapPosition(x, y);
+    if (isObstructed(wrappedX, wrappedY)) {
+      console.warn("cannot spawn on obstructed space");
+      return;
+    }
+
+    const positionId = uuid();
+    components.Position.addOverride(positionId, {
+      entity: result.playerEntity,
+      value: { x: wrappedX, y: wrappedY },
+    });
+    const playerId = uuid();
+    components.Player.addOverride(playerId, {
+      entity: result.playerEntity,
+      value: { value: true },
+    });
+
+    try {
+      const tx = await worldContract.spawn(wrappedX, wrappedY, { gasPrice: 0 });
+      await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
+    } finally {
+      components.Position.removeOverride(positionId);
+      components.Player.removeOverride(playerId);
+    }
+  };
+
   return {
     ...result,
     components,
@@ -139,6 +186,7 @@ export async function setup() {
     api: {
       moveTo,
       moveBy,
+      spawn,
     },
   };
 }

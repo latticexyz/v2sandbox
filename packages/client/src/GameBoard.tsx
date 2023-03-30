@@ -15,12 +15,13 @@ export const GameBoard = () => {
     components: { Encounter, Position, Player },
     playerEntity,
     worldContract,
+    api: { spawn },
   } = useMUD();
 
   useKeyboardMovement();
 
   const playerPosition = useComponentValue(Position, playerEntity);
-  const canJoinGame = useComponentValue(Player, playerEntity)?.value !== true;
+  const canSpawn = useComponentValue(Player, playerEntity)?.value !== true;
   const encounterId = useComponentValue(Encounter, playerEntity)?.value as
     | EntityID
     | undefined;
@@ -61,19 +62,16 @@ export const GameBoard = () => {
               key={`${x},${y}`}
               className={twMerge(
                 "w-8 h-8 flex items-center justify-center",
-                canJoinGame ? "cursor-pointer hover:ring" : null
+                canSpawn ? "cursor-pointer hover:ring" : null
               )}
               style={{
                 gridColumn: x + 1,
                 gridRow: y + 1,
               }}
-              onClick={(event) => {
+              onClick={async (event) => {
                 event.preventDefault();
-                if (canJoinGame) {
-                  worldContract.spawn(x, y, {
-                    gasLimit: 1_000_000,
-                    gasPrice: 0,
-                  });
+                if (canSpawn) {
+                  await spawn(x, y);
                 }
               }}
             >

@@ -4,26 +4,29 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { Position } from "../tables/Position.sol";
 import { Player } from "../tables/Player.sol";
 import { Movable } from "../tables/Movable.sol";
+import { Obstruction } from "../tables/Obstruction.sol";
 import { Encounterable } from "../tables/Encounterable.sol";
 import { MapConfig } from "../tables/MapConfig.sol";
 import { addressToEntityKey } from "../addressToEntityKey.sol";
+import { positionToEntityKey } from "../positionToEntityKey.sol";
 
 contract MapSystem is System {
   function spawn(uint32 x, uint32 y) public {
-    bytes32 entity = addressToEntityKey(address(_msgSender()));
-    require(Player.get(entity) == false, "already spawned");
+    bytes32 player = addressToEntityKey(address(_msgSender()));
+    require(Player.get(player) == false, "already spawned");
 
     // Constrain position to map size, wrapping around if necessary
     (uint32 width, uint32 height, ) = MapConfig.get();
     x = x + (width % width);
     y = y + (height % height);
 
-    // require(LibMap.obstructions(world, coord).length == 0, "this space is obstructed");
+    bytes32 position = positionToEntityKey(x, y);
+    require(Obstruction.get(position) == false, "this space is obstructed");
 
-    Player.set(entity, true);
-    Position.set(entity, x, y);
-    Movable.set(entity, true);
-    Encounterable.set(entity, true);
+    Player.set(player, true);
+    Position.set(player, x, y);
+    Movable.set(player, true);
+    Encounterable.set(player, true);
   }
 
   function move(uint32 x, uint32 y) public {

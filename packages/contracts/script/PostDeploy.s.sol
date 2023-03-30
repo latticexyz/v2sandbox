@@ -8,6 +8,7 @@ import { Position } from "../src/tables/Position.sol";
 import { Obstruction } from "../src/tables/Obstruction.sol";
 import { EncounterTrigger } from "../src/tables/EncounterTrigger.sol";
 import { MonsterType, TerrainType } from "../src/Types.sol";
+import { positionToEntityKey } from "../src/positionToEntityKey.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
@@ -55,7 +56,7 @@ contract PostDeploy is Script {
 
         terrain[(y * width) + x] = bytes1(uint8(terrainType));
 
-        bytes32 entity = keccak256(abi.encode(x, y));
+        bytes32 entity = positionToEntityKey(x, y);
         if (terrainType == TerrainType.Boulder) {
           Position.set(world, entity, x, y);
           Obstruction.set(world, entity, true);
