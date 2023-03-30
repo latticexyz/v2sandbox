@@ -4,6 +4,7 @@ import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { twMerge } from "tailwind-merge";
 import { useMUD } from "./MUDContext";
 import { useMapConfig } from "./useMapConfig";
+import { useKeyboardMovement } from "./useKeyboardMovement";
 
 export const GameBoard = () => {
   const { width, height, terrainValues } = useMapConfig();
@@ -16,7 +17,7 @@ export const GameBoard = () => {
     worldContract,
   } = useMUD();
 
-  // useKeyboardMovement();
+  useKeyboardMovement();
 
   const playerPosition = useComponentValue(Position, playerEntity);
   const canJoinGame = useComponentValue(Player, playerEntity)?.value !== true;
