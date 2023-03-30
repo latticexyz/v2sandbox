@@ -8,4 +8,4 @@ broadcast/
 .env
 
 deploys/**/*.json
-!deploys/4242/latest.json
+!deploys/**/latest.json
