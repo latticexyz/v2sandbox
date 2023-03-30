@@ -1,11 +1,9 @@
 import { setupMUDV2Network } from "@latticexyz/std-client";
-import { createFaucetService } from "@latticexyz/network";
+import { createFastTxExecutor, createFaucetService } from "@latticexyz/network";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
-import { utils } from "ethers";
-import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 import {
   getComponentValue,
   Has,
@@ -14,6 +12,9 @@ import {
   runQuery,
 } from "@latticexyz/recs";
 import { awaitStreamValue, uuid } from "@latticexyz/utils";
+import { Contract, Signer, utils } from "ethers";
+import { JsonRpcProvider } from "@ethersproject/providers";
+import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -54,10 +55,42 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
+  // Create a World contract instance
   const worldContract = IWorld__factory.connect(
     networkConfig.worldAddress,
-    signer || result.network.providers.get().json
+    signer ?? result.network.providers.get().json
   );
+
+  // Create a fast tx executor
+  const fastTxExecutor =
+    signer?.provider instanceof JsonRpcProvider
+      ? await createFastTxExecutor(
+          signer as Signer & { provider: JsonRpcProvider }
+        )
+      : null;
+
+  // TODO: infer this from fastTxExecute signature?
+  type BoundFastTxExecuteFn<C extends Contract> = <F extends keyof C>(
+    func: F,
+    args: Parameters<C[F]>,
+    options?: {
+      retryCount?: number;
+    }
+  ) => Promise<ReturnType<C[F]>>;
+
+  function bindFastTxExecute<C extends Contract>(
+    contract: C
+  ): BoundFastTxExecuteFn<C> {
+    return async function (...args) {
+      if (!fastTxExecutor) {
+        throw new Error("no signer");
+      }
+      const { tx } = await fastTxExecutor.fastTxExecute(contract, ...args);
+      return await tx;
+    };
+  }
+
+  const worldSend = bindFastTxExecute(worldContract);
 
   const components = {
     ...result.components,
@@ -118,7 +151,7 @@ export async function setup() {
       // Our system checks distance on the original/requested x,y and then wraps for us,
       // so we'll pass the original x,y here.
       // TODO: make the contract smarter about calculating wrapped distance
-      const tx = await worldContract.move(x, y, { gasPrice: 0 });
+      const tx = await worldSend("move", [x, y]);
       await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
     } finally {
       components.Position.removeOverride(positionId);
@@ -171,7 +204,7 @@ export async function setup() {
     });
 
     try {
-      const tx = await worldContract.spawn(wrappedX, wrappedY, { gasPrice: 0 });
+      const tx = await worldSend("spawn", [wrappedX, wrappedY]);
       await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
     } finally {
       components.Position.removeOverride(positionId);
@@ -183,6 +216,8 @@ export async function setup() {
     ...result,
     components,
     worldContract,
+    worldSend,
+    fastTxExecutor,
     api: {
       moveTo,
       moveBy,
