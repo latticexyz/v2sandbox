@@ -5,6 +5,7 @@ import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
 import { utils } from "ethers";
+import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -45,11 +46,19 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
+  // Create a World contract instance
+  if (!signer) throw new Error("No signer");
+  const worldContract = IWorld__factory.connect(
+    networkConfig.worldAddress,
+    signer
+  );
+
   return {
     ...result,
     components: {
       ...result.components,
       ...clientComponents,
     },
+    worldContract,
   };
 }
