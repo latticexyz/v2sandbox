@@ -2,16 +2,18 @@ import { mudConfig, resolveTableId } from "@latticexyz/cli";
 
 export default mudConfig({
   overrideSystems: {
-    IncrementSystem: {
-      fileSelector: "increment",
+    MoveSystem: {
+      fileSelector: "move",
       openAccess: true,
     },
   },
   tables: {
-    CounterTable: {
-      fileSelector: "counter",
+    PositionTable: {
+      fileSelector: "position",
       schema: {
-        value: "uint32",
+        x: "int32",
+        y: "int32",
+        z: "int32",
       },
       storeArgument: true,
     },
@@ -20,7 +22,7 @@ export default mudConfig({
     {
       name: "KeysWithValueModule",
       root: true,
-      args: [resolveTableId("CounterTable")],
+      args: [resolveTableId("PositionTable")],
     },
   ],
 });
