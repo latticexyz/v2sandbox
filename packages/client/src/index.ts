@@ -1,6 +1,6 @@
 import { setup } from "./mud/setup";
 
-const { components, worldContract, worldSend } = await setup();
+const { components, worldSend } = await setup();
 
 // Components expose a stream that triggers when the component is updated.
 components.CounterTable.update$.subscribe((update) => {
@@ -13,40 +13,9 @@ components.CounterTable.update$.subscribe((update) => {
 
 // Just for demonstration purposes: we create a global function that can be
 // called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
-(window as any).incrementFast = async () => {
-  const time = Date.now();
+(window as any).increment = async () => {
+  const tx = await worldSend("mud_increment_increment", []);
 
-  const fastTx = worldSend("mud_increment_increment", [{ gasLimit: 300_000 }]);
-
-  fastTx
-    .then((t) => {
-      console.log("fastTx", t);
-      console.log("fastTx time till sending tx", Date.now() - time, "ms");
-      return t.tx;
-    })
-    .then((t) => t.wait(0))
-    .then((result) => {
-      console.log("fastTx result", result);
-      console.log("fastTx time till result", Date.now() - time, "ms");
-    });
-};
-
-(window as any).incrementRegular = async () => {
-  const time = Date.now();
-  const regularTx = worldContract.mud_increment_increment({
-    gasLimit: 300_000,
-    gasPrice: 0,
-  });
-
-  regularTx
-    .then((t) => {
-      console.log("regularTx", t);
-      console.log("regularTx time till sending tx", Date.now() - time, "ms");
-      return t;
-    })
-    .then((t) => t.wait(0))
-    .then((result) => {
-      console.log("regularTx result", result);
-      console.log("regularTx time till result", Date.now() - time, "ms");
-    });
+  console.log("increment tx", tx);
+  console.log("increment result", await tx.wait());
 };
