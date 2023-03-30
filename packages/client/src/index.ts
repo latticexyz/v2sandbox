@@ -1,6 +1,6 @@
 import { setup } from "./mud/setup";
 
-const { components, worldContract, fastTxExecute } = await setup();
+const { components, worldContract, worldSend } = await setup();
 
 // Components expose a stream that triggers when the component is updated.
 components.CounterTable.update$.subscribe((update) => {
@@ -16,9 +16,7 @@ components.CounterTable.update$.subscribe((update) => {
 (window as any).incrementFast = async () => {
   const time = Date.now();
 
-  const fastTx = fastTxExecute(worldContract, "mud_increment_increment", [
-    { gasLimit: 300_000 },
-  ]);
+  const fastTx = worldSend("mud_increment_increment", [{ gasLimit: 300_000 }]);
 
   fastTx
     .then((t) => {
@@ -26,9 +24,8 @@ components.CounterTable.update$.subscribe((update) => {
       console.log("fastTx time till sending tx", Date.now() - time, "ms");
       return t.tx;
     })
-    .then(async (t) => {
-      console.log("t", t);
-      const result = await t.wait();
+    .then((t) => t.wait(0))
+    .then((result) => {
       console.log("fastTx result", result);
       console.log("fastTx time till result", Date.now() - time, "ms");
     });
@@ -38,6 +35,7 @@ components.CounterTable.update$.subscribe((update) => {
   const time = Date.now();
   const regularTx = worldContract.mud_increment_increment({
     gasLimit: 300_000,
+    gasPrice: 0,
   });
 
   regularTx
@@ -46,8 +44,8 @@ components.CounterTable.update$.subscribe((update) => {
       console.log("regularTx time till sending tx", Date.now() - time, "ms");
       return t;
     })
-    .then(async (t) => {
-      const result = await t.wait(0);
+    .then((t) => t.wait(0))
+    .then((result) => {
       console.log("regularTx result", result);
       console.log("regularTx time till result", Date.now() - time, "ms");
     });

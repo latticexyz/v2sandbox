@@ -4,7 +4,7 @@ import { getNetworkConfig } from "./getNetworkConfig";
 import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
-import { Signer, utils } from "ethers";
+import { Contract, Signer, utils } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 
@@ -47,19 +47,45 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
-  if (!signer) throw new Error("No signer");
-  if (!signer.provider) throw new Error("No provider connected to the signer");
-
   // Create a World contract instance
   const worldContract = IWorld__factory.connect(
     networkConfig.worldAddress,
-    signer
+    signer ?? result.network.providers.get().json
   );
 
   // Create a fast tx executor
-  const { fastTxExecute } = await createFastTxExecutor(
-    signer as Signer & { provider: JsonRpcProvider }
-  );
+  const fastTxExecutor =
+    signer?.provider instanceof JsonRpcProvider
+      ? await createFastTxExecutor(
+          signer as Signer & { provider: JsonRpcProvider }
+        )
+      : null;
+
+  // TODO: infer this from fastTxExecute signature?
+  type BoundFastTxExecuteFn<C extends Contract> = <F extends keyof C>(
+    func: F,
+    args: Parameters<C[F]>,
+    options?: {
+      retryCount?: number;
+    }
+  ) => Promise<{ hash: string; tx: ReturnType<C[F]> }>;
+
+  function bindFastTxExecute<C extends Contract>(
+    contract: C
+  ): BoundFastTxExecuteFn<C> {
+    return async function <F extends keyof C>(
+      func: F,
+      args: Parameters<C[F]>,
+      options: {
+        retryCount?: number;
+      } = { retryCount: 0 }
+    ): Promise<{ hash: string; tx: ReturnType<C[F]> }> {
+      if (!fastTxExecutor) {
+        throw new Error("no signer");
+      }
+      return await fastTxExecutor.fastTxExecute(contract, func, args, options);
+    };
+  }
 
   return {
     ...result,
@@ -68,6 +94,7 @@ export async function setup() {
       ...clientComponents,
     },
     worldContract,
-    fastTxExecute,
+    worldSend: bindFastTxExecute(worldContract),
+    fastTxExecutor,
   };
 }
