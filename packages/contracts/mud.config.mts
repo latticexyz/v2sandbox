@@ -63,6 +63,7 @@ export default mudConfig({
     },
     Position: {
       storeArgument: true,
+      dataStruct: false,
       schema: {
         x: "uint32",
         y: "uint32",

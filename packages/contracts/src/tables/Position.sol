@@ -20,11 +20,6 @@ import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCou
 uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes16("Position"))));
 uint256 constant PositionTableId = _tableId;
 
-struct PositionData {
-  uint32 x;
-  uint32 y;
-}
-
 library Position {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
@@ -141,7 +136,7 @@ library Position {
   }
 
   /** Get the full data */
-  function get(bytes32 key) internal view returns (PositionData memory _table) {
+  function get(bytes32 key) internal view returns (uint32 x, uint32 y) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
@@ -150,7 +145,7 @@ library Position {
   }
 
   /** Get the full data (using the specified store) */
-  function get(IStore _store, bytes32 key) internal view returns (PositionData memory _table) {
+  function get(IStore _store, bytes32 key) internal view returns (uint32 x, uint32 y) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
@@ -178,21 +173,11 @@ library Position {
     _store.setRecord(_tableId, _primaryKeys, _data);
   }
 
-  /** Set the full data using the data struct */
-  function set(bytes32 key, PositionData memory _table) internal {
-    set(key, _table.x, _table.y);
-  }
-
-  /** Set the full data using the data struct (using the specified store) */
-  function set(IStore _store, bytes32 key, PositionData memory _table) internal {
-    set(_store, key, _table.x, _table.y);
-  }
-
   /** Decode the tightly packed blob using this table's schema */
-  function decode(bytes memory _blob) internal pure returns (PositionData memory _table) {
-    _table.x = (uint32(Bytes.slice4(_blob, 0)));
+  function decode(bytes memory _blob) internal pure returns (uint32 x, uint32 y) {
+    x = (uint32(Bytes.slice4(_blob, 0)));
 
-    _table.y = (uint32(Bytes.slice4(_blob, 4)));
+    y = (uint32(Bytes.slice4(_blob, 4)));
   }
 
   /** Tightly pack full data using this table's schema */

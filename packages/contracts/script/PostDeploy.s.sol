@@ -68,6 +68,8 @@ contract PostDeploy is Script {
 
     MapConfig.set(world, width, height, terrain);
 
+    world.spawn(5, 5);
+
     vm.stopBroadcast();
   }
 }
