@@ -10,14 +10,16 @@ type NetworkConfig = SetupContractConfig & {
 export async function getNetworkConfig(): Promise<NetworkConfig> {
   const params = new URLSearchParams(window.location.search);
 
-  const chainId = Number(import.meta.env.VITE_CHAIN_ID);
+  const chainId = Number(
+    params.get("chainId") || import.meta.env.VITE_CHAIN_ID
+  );
   const chain = supportedChains.find((c) => c.id === chainId);
   if (!chain) {
     throw new Error(`Chain ${chainId} not found`);
   }
 
   const deploy = await import(
-    `../../../contracts/deploys/${import.meta.env.VITE_CHAIN_ID}/latest.json`
+    `../../../contracts/deploys/${chainId}/latest.json`
   );
 
   if (!deploy) {
