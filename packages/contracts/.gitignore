@@ -4,9 +4,8 @@ node_modules/
 bindings/
 artifacts/
 abi/
-types/
 broadcast/
 .env
 
-deploys
-!deploys/4242/latest.json
+deploys/**/*.json
+!deploys/**/latest.json
