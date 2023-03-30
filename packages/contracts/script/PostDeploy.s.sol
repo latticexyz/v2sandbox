@@ -2,54 +2,71 @@
 pragma solidity >=0.8.0;
 
 import "forge-std/Script.sol";
-import { IncrementSystemWrapper, SubWorld } from "../src/wrapper/IncrementSystemWrapper.sol";
-import { World } from "@latticexyz/world/src/World.sol";
-import { CounterTable, CounterTableTableId } from "../src/tables/CounterTable.sol";
-import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
 import { IWorld } from "../src/world/IWorld.sol";
+import { MapConfig } from "../src/tables/MapConfig.sol";
+import { Position } from "../src/tables/Position.sol";
+import { Obstruction } from "../src/tables/Obstruction.sol";
+import { EncounterTrigger } from "../src/tables/EncounterTrigger.sol";
+import { MonsterType, TerrainType } from "../src/Types.sol";
 
 contract PostDeploy is Script {
   function run(address worldAddress) external {
-    // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
-    uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+    console.log("Deployed world: ", worldAddress);
+    IWorld world = IWorld(worldAddress);
 
-    // Start broadcasting transactions from the deployer account
+    uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
     vm.startBroadcast(deployerPrivateKey);
 
-    // --------------- SANITY CHECKS ----------------
-    World world = World(worldAddress);
+    TerrainType O = TerrainType.None;
+    TerrainType T = TerrainType.TallGrass;
+    TerrainType B = TerrainType.Boulder;
 
-    // Sanity check 1: the world address should be the same as the one we just deployed
-    console.log("Deployed world: ", worldAddress);
+    TerrainType[20][20] memory map = [
+      [O, O, O, O, O, O, T, O, O, O, O, O, O, O, O, O, O, O, O, O],
+      [O, O, T, O, O, O, O, O, T, O, O, O, O, B, O, O, O, O, O, O],
+      [O, T, T, T, T, O, O, O, O, O, O, O, O, O, O, T, T, O, O, O],
+      [O, O, T, T, T, T, O, O, O, O, B, O, O, O, O, O, T, O, O, O],
+      [O, O, O, O, T, T, O, O, O, O, O, O, O, O, O, O, O, T, O, O],
+      [O, O, O, B, B, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O],
+      [O, T, O, O, O, B, B, O, O, O, O, T, O, O, O, O, O, B, O, O],
+      [O, O, T, T, O, O, O, O, O, T, O, B, O, O, T, O, B, O, O, O],
+      [O, O, T, O, O, O, O, T, T, T, O, B, B, O, O, O, O, O, O, O],
+      [O, O, O, O, O, O, O, T, T, T, O, B, T, O, T, T, O, O, O, O],
+      [O, B, O, O, O, B, O, O, T, T, O, B, O, O, T, T, O, O, O, O],
+      [O, O, B, O, O, O, T, O, T, T, O, O, B, T, T, T, O, O, O, O],
+      [O, O, B, B, O, O, O, O, T, O, O, O, B, O, T, O, O, O, O, O],
+      [O, O, O, B, B, O, O, O, O, O, O, O, O, B, O, T, O, O, O, O],
+      [O, O, O, O, B, O, O, O, O, O, O, O, O, O, O, O, O, O, O, O],
+      [O, O, O, O, O, O, O, O, O, O, B, B, O, O, T, O, O, O, O, O],
+      [O, O, O, O, T, O, O, O, T, B, O, O, O, T, T, O, B, O, O, O],
+      [O, O, O, T, O, T, T, T, O, O, O, O, O, T, O, O, O, O, O, O],
+      [O, O, O, T, T, T, T, O, O, O, O, T, O, O, O, T, O, O, O, O],
+      [O, O, O, O, O, T, O, O, O, O, O, O, O, O, O, O, O, O, O, O]
+    ];
 
-    // Sanity check 2: the msg.sender of this function should be the deployer account
-    new TestContract().test();
+    uint32 height = uint32(map.length);
+    uint32 width = uint32(map[0].length);
+    bytes memory terrain = new bytes(width * height);
 
-    // Sanity check 3: check the key schema
-    bytes32 schema = world.getKeySchema(CounterTableTableId).unwrap();
-    console.logBytes32(schema);
+    for (uint32 y = 0; y < height; y++) {
+      for (uint32 x = 0; x < width; x++) {
+        TerrainType terrainType = map[y][x];
+        if (terrainType == TerrainType.None) continue;
 
-    // ------------------ EXAMPLES ------------------
+        terrain[(y * width) + x] = bytes1(uint8(terrainType));
 
-    // Call increment on world via the IncrementSystemWrapper
-    uint32 newValue = IncrementSystemWrapper.increment(World(worldAddress));
-    console.log("Increment via World:", newValue);
+        bytes32 entity = keccak256(abi.encode(x, y));
+        if (terrainType == TerrainType.Boulder) {
+          Position.set(world, entity, x, y);
+          Obstruction.set(world, entity, true);
+        } else if (terrainType == TerrainType.TallGrass) {
+          Position.set(world, entity, x, y);
+          EncounterTrigger.set(world, entity, true);
+        }
+      }
+    }
 
-    // Call increment on world via the IncrementSystemWrapper and SubWorld custom type
-    SubWorld subWorld = SubWorld.wrap(worldAddress);
-    newValue = subWorld.increment();
-    console.log("Increment via SubWorld:", newValue);
-
-    // Call increment on the world via the registered function selector
-    newValue = IWorld(worldAddress).mud_increment_increment();
-    console.log("Increment via IWorld:", newValue);
-
-    // ------------ MORE SANITY CHECKS -------------
-
-    // Sanity check 4: check the CounterTable has a reverse mapping hooked up
-    bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, CounterTable.encode(newValue));
-    console.log("Number of keys with newValue (should be 1):", keysWithValue.length);
-    require(keysWithValue.length == 1, "Expected 1 key with value 2");
+    MapConfig.set(world, width, height, terrain);
 
     vm.stopBroadcast();
   }
