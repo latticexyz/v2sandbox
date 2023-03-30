@@ -1,14 +1,12 @@
 import { setupMUDV2Network } from "@latticexyz/std-client";
-import { createFaucetService } from "@latticexyz/network";
+import { createFastTxExecutor, createFaucetService } from "@latticexyz/network";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
-import { utils } from "ethers";
+import { Signer, utils } from "ethers";
+import { JsonRpcProvider } from "@ethersproject/providers";
 import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
-import { createTxQueue } from "@latticexyz/network";
-import { computed } from "mobx";
-import { BehaviorSubject } from "rxjs";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -49,21 +47,18 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
-  // Create a World contract instance
   if (!signer) throw new Error("No signer");
+  if (!signer.provider) throw new Error("No provider connected to the signer");
+
+  // Create a World contract instance
   const worldContract = IWorld__factory.connect(
     networkConfig.worldAddress,
     signer
   );
 
-  // Create a tx queue
-  const gasPrice$ = new BehaviorSubject<number>(0);
-  const { txQueue } = createTxQueue(
-    computed(() => ({
-      world: worldContract,
-    })),
-    result.network,
-    gasPrice$
+  // Create a fast tx executor
+  const { fastTxExecute } = await createFastTxExecutor(
+    signer as Signer & { provider: JsonRpcProvider }
   );
 
   return {
@@ -73,6 +68,6 @@ export async function setup() {
       ...clientComponents,
     },
     worldContract,
-    txQueue,
+    fastTxExecute,
   };
 }
