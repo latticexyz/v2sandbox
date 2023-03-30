@@ -6,11 +6,11 @@ import { Player } from "../tables/Player.sol";
 import { Movable } from "../tables/Movable.sol";
 import { Encounterable } from "../tables/Encounterable.sol";
 import { MapConfig } from "../tables/MapConfig.sol";
+import { addressToEntityKey } from "../addressToEntityKey.sol";
 
 contract MapSystem is System {
   function spawn(uint32 x, uint32 y) public {
-    // TODO: figure out how this is padded when casting to bytes20->32 instead of uint256->bytes32
-    bytes32 entity = bytes32(bytes20(address(_msgSender())));
+    bytes32 entity = addressToEntityKey(address(_msgSender()));
     require(Player.get(entity) == false, "already spawned");
 
     // Constrain position to map size, wrapping around if necessary
@@ -27,8 +27,7 @@ contract MapSystem is System {
   }
 
   function move(uint32 x, uint32 y) public {
-    // TODO: figure out how this is padded when casting to bytes20->32 instead of uint256->bytes32
-    bytes32 entity = bytes32(bytes20(address(_msgSender())));
+    bytes32 entity = addressToEntityKey(address(_msgSender()));
     require(Movable.get(entity) == true, "cannot move");
 
     (uint32 fromX, uint32 fromY) = Position.get(entity);

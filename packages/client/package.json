@@ -11,8 +11,11 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.29.0",
     "typescript": "^4.9.5",
     "vite": "^3.2.3"
@@ -21,6 +24,7 @@
     "@improbable-eng/grpc-web": "^0.15.0",
     "@latticexyz/cli": "2.0.0-alpha.37",
     "@latticexyz/network": "2.0.0-alpha.37",
+    "@latticexyz/react": "2.0.0-alpha.37",
     "@latticexyz/recs": "2.0.0-alpha.37",
     "@latticexyz/schema-type": "2.0.0-alpha.37",
     "@latticexyz/services": "2.0.0-alpha.37",
@@ -36,6 +40,7 @@
     "nice-grpc-web": "^2.0.1",
     "proxy-deep": "^3.1.1",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rxjs": "^7.5.5",
     "threads": "^1.7.0"
   }
