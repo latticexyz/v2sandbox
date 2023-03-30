@@ -6,6 +6,9 @@ import { clientComponents } from "./clientComponents";
 import { world } from "./world";
 import { utils } from "ethers";
 import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
+import { createTxQueue } from "@latticexyz/network";
+import { computed } from "mobx";
+import { BehaviorSubject } from "rxjs";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -53,6 +56,16 @@ export async function setup() {
     signer
   );
 
+  // Create a tx queue
+  const gasPrice$ = new BehaviorSubject<number>(0);
+  const { txQueue } = createTxQueue(
+    computed(() => ({
+      world: worldContract,
+    })),
+    result.network,
+    gasPrice$
+  );
+
   return {
     ...result,
     components: {
@@ -60,5 +73,6 @@ export async function setup() {
       ...clientComponents,
     },
     worldContract,
+    txQueue,
   };
 }
