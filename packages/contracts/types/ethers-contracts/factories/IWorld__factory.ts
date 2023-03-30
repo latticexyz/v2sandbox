@@ -357,15 +357,20 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "mud_increment_increment",
-    outputs: [
+    inputs: [
       {
         internalType: "uint32",
-        name: "",
+        name: "x",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "y",
         type: "uint32",
       },
     ],
+    name: "move",
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -625,6 +630,24 @@ const _abi = [
       },
     ],
     name: "setRecord",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "x",
+        type: "uint32",
+      },
+      {
+        internalType: "uint32",
+        name: "y",
+        type: "uint32",
+      },
+    ],
+    name: "spawn",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

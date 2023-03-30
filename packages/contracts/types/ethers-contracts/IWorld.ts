@@ -42,7 +42,7 @@ export interface IWorldInterface extends utils.Interface {
     "installModule(address,bytes)": FunctionFragment;
     "installRootModule(address,bytes)": FunctionFragment;
     "isStore()": FunctionFragment;
-    "mud_increment_increment()": FunctionFragment;
+    "move(uint32,uint32)": FunctionFragment;
     "pushToField(uint256,bytes32[],uint8,bytes)": FunctionFragment;
     "pushToField(bytes16,bytes16,bytes32[],uint8,bytes)": FunctionFragment;
     "registerSchema(uint256,bytes32,bytes32)": FunctionFragment;
@@ -53,6 +53,7 @@ export interface IWorldInterface extends utils.Interface {
     "setMetadata(uint256,string,string[])": FunctionFragment;
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
+    "spawn(uint32,uint32)": FunctionFragment;
   };
 
   getFunction(
@@ -70,7 +71,7 @@ export interface IWorldInterface extends utils.Interface {
       | "installModule"
       | "installRootModule"
       | "isStore"
-      | "mud_increment_increment"
+      | "move"
       | "pushToField(uint256,bytes32[],uint8,bytes)"
       | "pushToField(bytes16,bytes16,bytes32[],uint8,bytes)"
       | "registerSchema"
@@ -81,6 +82,7 @@ export interface IWorldInterface extends utils.Interface {
       | "setMetadata"
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
+      | "spawn"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -153,8 +155,8 @@ export interface IWorldInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "isStore", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "mud_increment_increment",
-    values?: undefined
+    functionFragment: "move",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "pushToField(uint256,bytes32[],uint8,bytes)",
@@ -239,6 +241,10 @@ export interface IWorldInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "spawn",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(
@@ -280,10 +286,7 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "isStore", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "mud_increment_increment",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "move", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "pushToField(uint256,bytes32[],uint8,bytes)",
     data: BytesLike
@@ -324,6 +327,7 @@ export interface IWorldInterface extends utils.Interface {
     functionFragment: "setRecord(uint256,bytes32[],bytes)",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "spawn", data: BytesLike): Result;
 
   events: {
     "StoreDeleteRecord(uint256,bytes32[])": EventFragment;
@@ -477,7 +481,9 @@ export interface IWorld extends BaseContract {
 
     isStore(overrides?: CallOverrides): Promise<[void]>;
 
-    mud_increment_increment(
+    move(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -554,6 +560,12 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    spawn(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -635,7 +647,9 @@ export interface IWorld extends BaseContract {
 
   isStore(overrides?: CallOverrides): Promise<void>;
 
-  mud_increment_increment(
+  move(
+    x: PromiseOrValue<BigNumberish>,
+    y: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -712,6 +726,12 @@ export interface IWorld extends BaseContract {
     table: PromiseOrValue<BigNumberish>,
     key: PromiseOrValue<BytesLike>[],
     data: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  spawn(
+    x: PromiseOrValue<BigNumberish>,
+    y: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -793,7 +813,11 @@ export interface IWorld extends BaseContract {
 
     isStore(overrides?: CallOverrides): Promise<void>;
 
-    mud_increment_increment(overrides?: CallOverrides): Promise<number>;
+    move(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     "pushToField(uint256,bytes32[],uint8,bytes)"(
       table: PromiseOrValue<BigNumberish>,
@@ -868,6 +892,12 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
       data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    spawn(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -982,7 +1012,9 @@ export interface IWorld extends BaseContract {
 
     isStore(overrides?: CallOverrides): Promise<BigNumber>;
 
-    mud_increment_increment(
+    move(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1059,6 +1091,12 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    spawn(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -1141,7 +1179,9 @@ export interface IWorld extends BaseContract {
 
     isStore(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    mud_increment_increment(
+    move(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1218,6 +1258,12 @@ export interface IWorld extends BaseContract {
       table: PromiseOrValue<BigNumberish>,
       key: PromiseOrValue<BytesLike>[],
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    spawn(
+      x: PromiseOrValue<BigNumberish>,
+      y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

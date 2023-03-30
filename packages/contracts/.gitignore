@@ -9,3 +9,4 @@ broadcast/
 
 deploys/**/*.json
 !deploys/**/latest.json
+deploys/31337/latest.json
