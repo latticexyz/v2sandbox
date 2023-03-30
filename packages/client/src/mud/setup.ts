@@ -1,10 +1,12 @@
 import { setupMUDV2Network } from "@latticexyz/std-client";
-import { createFaucetService } from "@latticexyz/network";
+import { createFastTxExecutor, createFaucetService } from "@latticexyz/network";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
-import { utils } from "ethers";
+import { Contract, Signer, utils } from "ethers";
+import { JsonRpcProvider } from "@ethersproject/providers";
+import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -45,11 +47,49 @@ export async function setup() {
     setInterval(requestDrip, 20000);
   }
 
+  // Create a World contract instance
+  const worldContract = IWorld__factory.connect(
+    networkConfig.worldAddress,
+    signer ?? result.network.providers.get().json
+  );
+
+  // Create a fast tx executor
+  const fastTxExecutor =
+    signer?.provider instanceof JsonRpcProvider
+      ? await createFastTxExecutor(
+          signer as Signer & { provider: JsonRpcProvider }
+        )
+      : null;
+
+  // TODO: infer this from fastTxExecute signature?
+  type BoundFastTxExecuteFn<C extends Contract> = <F extends keyof C>(
+    func: F,
+    args: Parameters<C[F]>,
+    options?: {
+      retryCount?: number;
+    }
+  ) => Promise<ReturnType<C[F]>>;
+
+  function bindFastTxExecute<C extends Contract>(
+    contract: C
+  ): BoundFastTxExecuteFn<C> {
+    return async function (...args) {
+      if (!fastTxExecutor) {
+        throw new Error("no signer");
+      }
+      const { tx } = await fastTxExecutor.fastTxExecute(contract, ...args);
+      return await tx;
+    };
+  }
+
   return {
     ...result,
     components: {
       ...result.components,
       ...clientComponents,
     },
+    worldContract,
+    worldSend: bindFastTxExecute(worldContract),
+    fastTxExecutor,
   };
 }
