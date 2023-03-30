@@ -7,5 +7,5 @@ abi/
 broadcast/
 .env
 
-deploys
+deploys/**/*.json
 !deploys/4242/latest.json
