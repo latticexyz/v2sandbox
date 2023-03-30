@@ -1,36 +1,29 @@
 import { useComponentValue } from "@latticexyz/react";
-import { IWorld__factory } from "../../contracts/types/ethers-contracts/factories/IWorld__factory";
+import { SyncState } from "@latticexyz/network";
 import { useMUD } from "./MUDContext";
+import { GameBoard } from "./GameBoard";
 
 export const App = () => {
   const {
-    worldContract,
-    components: { Position },
-    playerEntity,
-    playerEntityId,
+    components: { LoadingState },
+    singletonEntity,
   } = useMUD();
 
-  console.log("playerEntityId", playerEntityId);
-  const position = useComponentValue(Position, playerEntity);
+  const loadingState = useComponentValue(LoadingState, singletonEntity, {
+    state: SyncState.CONNECTING,
+    msg: "Connecting",
+    percentage: 0,
+  });
 
   return (
-    <>
-      <div>
-        Player position: {position?.x}, {position?.y}
-      </div>
-      <div>
-        <button
-          type="button"
-          onClick={() =>
-            worldContract.spawn(5, 5, {
-              gasLimit: 1_000_000,
-              gasPrice: 0,
-            })
-          }
-        >
-          spawn
-        </button>
-      </div>
-    </>
+    <div className="w-screen h-screen flex items-center justify-center">
+      {loadingState.state !== SyncState.LIVE ? (
+        <div>
+          {loadingState.msg} ({Math.floor(loadingState.percentage)}%)
+        </div>
+      ) : (
+        <GameBoard />
+      )}
+    </div>
   );
 };
