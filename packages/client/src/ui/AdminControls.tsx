@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useMUD, useStore } from "../store";
-import { ClickWrapper } from "./theme/ClickWrapper";
 
-export const Controls = () => {
+export const AdminControls = () => {
   const { devMode } = useMUD();
 
   useEffect(() => {
@@ -18,13 +17,5 @@ export const Controls = () => {
     };
   }, [devMode]);
 
-  return (
-    <ClickWrapper
-      style={{ position: "absolute", top: 0, left: 0, zIndex: 1000 }}
-    >
-      <button onClick={() => useStore.setState({ devMode: !devMode })}>
-        {devMode ? "Hide" : "Show"} ECS Browser
-      </button>
-    </ClickWrapper>
-  );
+  return (<></>);
 };

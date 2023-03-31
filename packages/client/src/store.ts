@@ -7,24 +7,31 @@ export type Store = {
   networkLayer: NetworkLayer | null;
   phaserLayer: PhaserLayer | null;
   devMode: boolean;
-};
-
-export type UIStore = {
-  networkLayer: NetworkLayer;
-  phaserLayer: PhaserLayer;
-  devMode: boolean;
+  messages: { message: string; color: string}[];
 };
 
 export const store = createStore<Store>(() => ({
   networkLayer: null,
   phaserLayer: null,
   devMode: false,
+  messages: [],
 }));
 
 export const useStore = createReactStore(store);
 
+/*
+  * MUDStore is a wrapper around the store that provides a type-safe interface
+  * to the store.
+*/
+export type MUDStore = {
+  networkLayer: NetworkLayer;
+  phaserLayer: PhaserLayer;
+  devMode: boolean;
+  messages: { message: string; color: string}[];
+};
+
 export const useMUD = () => {
-  const { networkLayer, phaserLayer, devMode } = useStore();
+  const { networkLayer, phaserLayer, devMode, messages } = useStore();
 
   if (networkLayer === null || phaserLayer === null) {
     throw new Error("Store not initialized");
@@ -34,5 +41,8 @@ export const useMUD = () => {
     networkLayer,
     phaserLayer,
     devMode,
-  } as UIStore;
+
+    // Add UI state here
+    messages,
+  } as MUDStore;
 };

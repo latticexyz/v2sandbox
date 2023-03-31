@@ -17,14 +17,14 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes16("counter"))));
-uint256 constant CounterTableTableId = _tableId;
+uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16("mud"), bytes16("monster"))));
+uint256 constant MonsterTableTableId = _tableId;
 
-library CounterTable {
+library MonsterTable {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.UINT32;
+    _schema[0] = SchemaType.BOOL;
 
     return SchemaLib.encode(_schema);
   }
@@ -40,7 +40,7 @@ library CounterTable {
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](1);
     _fieldNames[0] = "value";
-    return ("CounterTable", _fieldNames);
+    return ("MonsterTable", _fieldNames);
   }
 
   /** Register the table's schema */
@@ -66,25 +66,25 @@ library CounterTable {
   }
 
   /** Get value */
-  function get(bytes32 key) internal view returns (uint32 value) {
+  function get(bytes32 key) internal view returns (bool value) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
-    return (uint32(Bytes.slice4(_blob, 0)));
+    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
   }
 
   /** Get value (using the specified store) */
-  function get(IStore _store, bytes32 key) internal view returns (uint32 value) {
+  function get(IStore _store, bytes32 key) internal view returns (bool value) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
-    return (uint32(Bytes.slice4(_blob, 0)));
+    return (_toBool(uint8(Bytes.slice1(_blob, 0))));
   }
 
   /** Set value */
-  function set(bytes32 key, uint32 value) internal {
+  function set(bytes32 key, bool value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
@@ -92,7 +92,7 @@ library CounterTable {
   }
 
   /** Set value (using the specified store) */
-  function set(IStore _store, bytes32 key, uint32 value) internal {
+  function set(IStore _store, bytes32 key, bool value) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32((key));
 
@@ -100,7 +100,7 @@ library CounterTable {
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint32 value) internal view returns (bytes memory) {
+  function encode(bool value) internal view returns (bytes memory) {
     return abi.encodePacked(value);
   }
 
@@ -118,5 +118,11 @@ library CounterTable {
     _primaryKeys[0] = bytes32((key));
 
     _store.deleteRecord(_tableId, _primaryKeys);
+  }
+}
+
+function _toBool(uint8 value) pure returns (bool result) {
+  assembly {
+    result := value
   }
 }

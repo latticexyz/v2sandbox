@@ -74,6 +74,16 @@ export const phaserConfig = {
           prefix: "sprites/soldier/idle/",
           suffix: ".png",
         },
+        {
+          key: Animations.GolemIdle,
+          assetKey: Assets.MainAtlas,
+          startFrame: 0,
+          endFrame: 3,
+          frameRate: 6,
+          repeat: -1,
+          prefix: "sprites/golem/idle/",
+          suffix: ".png",
+        },
       ],
       tilesets: {
         Default: {

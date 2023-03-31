@@ -2,11 +2,13 @@ import { IWorld__factory } from "../../../../contracts/types/ethers-contracts/fa
 import { world } from "../../mud/world";
 import { setup } from "../../mud/setup";
 import { getNetworkConfig } from "../../mud/getNetworkConfig";
+import { createNetworkUtils } from "./createNetworkUtils";
+import { createActionSystem } from "@latticexyz/std-client";
 
 export type NetworkLayer = Awaited<ReturnType<typeof createNetworkLayer>>;
 
 export const createNetworkLayer = async () => {
-  const { singletonEntity, components, network, worldSend } = await setup();
+  const { singletonEntity, components, network, worldSend, txReduced$, playerEntity, playerEntityId } = await setup();
 
   const config = await getNetworkConfig();
 
@@ -20,12 +22,24 @@ export const createNetworkLayer = async () => {
 
   const worldContract = IWorld__factory.connect(config.worldAddress, signer);
 
-  return {
+  const actions = createActionSystem(world, txReduced$);
+
+  const layer = {
     world,
     worldContract,
     worldSend,
     singletonEntity,
     network,
     components,
+    actions,
+    playerEntity,
+    playerEntityId,
+  };
+
+  const utils = createNetworkUtils(layer);
+
+  return {
+    ...layer,
+    utils,
   };
 };
