@@ -2,6 +2,8 @@ import type { Chain } from "@wagmi/chains";
 
 // TODO: move this to MUD chains/config?
 
+type MudChain = Chain & { modeUrl?: string };
+
 export const latticeTestnet = {
   name: "Lattice Testnet",
   id: 4242,
@@ -17,7 +19,8 @@ export const latticeTestnet = {
       webSocket: ["wss://follower.testnet-chain.linfra.xyz"],
     },
   },
-} as const satisfies Chain;
+  modeUrl: "https://mode.testnet-mud-services.linfra.xyz",
+} as const satisfies MudChain;
 
 export const localhost = {
   id: 31337,
@@ -38,6 +41,6 @@ export const localhost = {
       webSocket: ["ws://127.0.0.1:8545"],
     },
   },
-} as const satisfies Chain;
+} as const satisfies MudChain;
 
-export const supportedChains: Chain[] = [localhost, latticeTestnet];
+export const supportedChains: MudChain[] = [localhost, latticeTestnet];
