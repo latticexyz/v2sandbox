@@ -20,10 +20,10 @@ export default mudConfig({
     },
   },
   modules: [
-    // {
-    //   name: "KeysWithValueModule",
-    //   root: true,
-    //   args: [resolveTableId("CounterTable")],
-    // },
+    {
+      name: "KeysWithValueModule",
+      root: true,
+      args: [resolveTableId("CounterTable")],
+    },
   ],
 });
