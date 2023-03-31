@@ -11,5 +11,3 @@ broadcast/
 deploys/**/*.json
 # Except the latest ones (so we can load these into client)
 !deploys/**/latest.json
-# But not localhost, since we'll never deploy with this and it changes often
-deploys/31337/latest.json

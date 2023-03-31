@@ -1,6 +1,10 @@
 import { SetupContractConfig } from "@latticexyz/std-client";
 import { burnerWallet } from "./burnerWallet";
-import { supportedChains } from "./supportedChains";
+
+import latticeTestnet from "./supportedChains/latticeTestnet";
+import latestLatticeTestnetDeploy from "../../../contracts/deploys/4242/latest.json";
+import localhost from "./supportedChains/localhost";
+import latestLocalhostDeploy from "../../../contracts/deploys/31337/latest.json";
 
 type NetworkConfig = SetupContractConfig & {
   privateKey: string;
@@ -10,18 +14,19 @@ type NetworkConfig = SetupContractConfig & {
 export async function getNetworkConfig(): Promise<NetworkConfig> {
   const params = new URLSearchParams(window.location.search);
 
+  const supportedChains = [localhost, latticeTestnet];
+  const deploys = [latestLocalhostDeploy, latestLatticeTestnetDeploy];
+
   const chainId = Number(
     params.get("chainId") || import.meta.env.VITE_CHAIN_ID
   );
-  const chain = supportedChains.find((c) => c.id === chainId);
+  const chainIndex = supportedChains.findIndex((c) => c.id === chainId);
+  const chain = supportedChains[chainIndex];
   if (!chain) {
     throw new Error(`Chain ${chainId} not found`);
   }
 
-  const deploy = await import(
-    `../../../contracts/deploys/${chainId}/latest.json`
-  );
-
+  const deploy = deploys[chainIndex];
   if (!deploy) {
     throw new Error(
       `No deployment found for chain ${chainId}. Did you run \`mud deploy\`?`
