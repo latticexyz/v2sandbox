@@ -8,6 +8,14 @@ export default mudConfig({
     },
   },
   tables: {
+    BoxTable: {
+      fileSelector: "box",
+      schema: {
+        width: "int32",
+        height: "int32",
+        depth: "int32",
+      },
+    },
     PositionTable: {
       fileSelector: "position",
       schema: {
@@ -17,12 +25,18 @@ export default mudConfig({
       },
       storeArgument: true,
     },
+    PlayerTable: {
+      fileSelector: "player",
+      schema: {
+        flag: "bool",
+      },
+    },
   },
   modules: [
     {
       name: "KeysWithValueModule",
       root: true,
-      args: [resolveTableId("PositionTable")],
+      args: [resolveTableId("PositionTable"), resolveTableId("PlayerTable"), resolveTableId("BoxTable")],
     },
   ],
 });
