@@ -14,7 +14,7 @@ components.CounterTable.update$.subscribe((update) => {
 // Just for demonstration purposes: we create a global function that can be
 // called to invoke the Increment system contract via the world. (See IncrementSystem.sol.)
 (window as any).increment = async () => {
-  const tx = await worldSend("mud_increment_increment", []);
+  const tx = await worldSend("increment", []);
 
   console.log("increment tx", tx);
   console.log("increment result", await tx.wait());
