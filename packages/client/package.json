@@ -11,8 +11,10 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.29.0",
     "typescript": "^4.9.5",
     "vite": "^3.2.3"
@@ -27,6 +29,7 @@
     "@latticexyz/std-client": "2.0.0-alpha.53",
     "@latticexyz/utils": "2.0.0-alpha.53",
     "@latticexyz/world": "2.0.0-alpha.53",
+    "@latticexyz/react": "2.0.0-alpha.53",
     "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",
     "ethers": "^5.7.2",
@@ -37,6 +40,7 @@
     "proxy-deep": "^3.1.1",
     "react": "^18.2.0",
     "rxjs": "^7.5.5",
+    "react-dom": "^18.2.0",
     "threads": "^1.7.0",
     "viem": "^0.1.25"
   }
