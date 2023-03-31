@@ -11,11 +11,15 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.191",
     "@types/react-dom": "^18.0.11",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.29.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react": "^7.32.2",
     "typescript": "^4.9.5",
     "vite": "^3.2.3"
   },
@@ -30,18 +34,25 @@
     "@latticexyz/utils": "2.0.0-alpha.53",
     "@latticexyz/world": "2.0.0-alpha.53",
     "@latticexyz/react": "2.0.0-alpha.53",
+    "@latticexyz/ecs-browser": "2.0.0-alpha.53",
+    "@latticexyz/phaserx": "2.0.0-alpha.53",
     "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21",
+    "mobx-react-lite": "^3.4.3",
     "mobx": "^6.7.0",
-    "nice-grpc": "^2.0.1",
     "nice-grpc-web": "^2.0.1",
+    "nice-grpc": "^2.0.1",
+    "phaser": "3.60.0-beta.14",
     "proxy-deep": "^3.1.1",
     "react": "^18.2.0",
-    "rxjs": "^7.5.5",
     "react-dom": "^18.2.0",
+    "rxjs": "^7.5.5",
+    "styled-components": "^5.3.9",
     "threads": "^1.7.0",
-    "viem": "^0.1.25"
+    "use-resize-observer": "^9.1.0",
+    "viem": "^0.1.25",
+    "zustand": "^4.3.6"
   }
 }
