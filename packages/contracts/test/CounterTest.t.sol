@@ -3,9 +3,10 @@ pragma solidity >=0.8.0;
 
 import "forge-std/Test.sol";
 import { MudV2Test } from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
+import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
 
 import { IWorld } from "../src/world/IWorld.sol";
-import { CounterTable } from "../src/tables/CounterTable.sol";
+import { CounterTable, CounterTableTableId } from "../src/tables/CounterTable.sol";
 
 contract CounterTest is MudV2Test {
   IWorld world;
@@ -26,12 +27,20 @@ contract CounterTest is MudV2Test {
 
   function testCounter() public {
     // Expect the counter to be 1 because it was incremented in the PostDeploy script.
-    uint32 counter = CounterTable.get(world, bytes32("singleton"));
+    bytes32 key = bytes32("singleton");
+    uint32 counter = CounterTable.get(world, key);
     assertEq(counter, 1);
 
     // Expect the counter to be 2 after calling increment.
-    world.mud_increment_increment();
-    counter = CounterTable.get(world, bytes32("singleton"));
+    world.increment();
+    counter = CounterTable.get(world, key);
     assertEq(counter, 2);
+  }
+
+  function testKeysWithValue() public {
+    bytes32 key = bytes32("singleton");
+    uint32 counter = CounterTable.get(world, key);
+    bytes32[] memory keysWithValue = getKeysWithValue(world, CounterTableTableId, CounterTable.encode(counter));
+    assertEq(keysWithValue.length, 1);
   }
 }
