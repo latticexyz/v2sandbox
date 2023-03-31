@@ -16,6 +16,7 @@ const latticeTestnet = {
     },
   },
   modeUrl: "https://mode.testnet-mud-services.linfra.xyz",
+  faucetUrl: "https://faucet.testnet-mud-services.linfra.xyz",
 } as const satisfies MudChain;
 
 export default latticeTestnet;

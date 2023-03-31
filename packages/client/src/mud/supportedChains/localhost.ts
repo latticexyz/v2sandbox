@@ -20,6 +20,7 @@ const localhost = {
     },
   },
   modeUrl: undefined,
+  faucetUrl: undefined,
 } as const satisfies MudChain;
 
 export default localhost;
