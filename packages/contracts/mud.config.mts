@@ -17,6 +17,7 @@ export default mudConfig({
       schema: {
         value: "uint32",
       },
+      storeArgument: true,
     },
   },
   modules: [
