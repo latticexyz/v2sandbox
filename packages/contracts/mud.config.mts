@@ -1,15 +1,7 @@
-import { mudConfig, resolveTableId } from "@latticexyz/cli";
+import { mudConfig } from "@latticexyz/cli";
 
 export default mudConfig({
   deploysDirectory: "./deploys",
-  // worldContractName: "CustomWorld",
-  // namespace: "emojimon",
-  // overrideSystems: {
-  //   IncrementSystem: {
-  //     fileSelector: "increment",
-  //     openAccess: true,
-  //   },
-  // },
   enums: {
     MonsterType: ["None", "Eagle", "Rat", "Caterpillar"],
     TerrainType: ["None", "TallGrass", "Boulder"],

@@ -74,9 +74,3 @@ contract PostDeploy is Script {
     vm.stopBroadcast();
   }
 }
-
-contract TestContract {
-  function test() public view {
-    console.log(msg.sender);
-  }
-}

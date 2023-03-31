@@ -1,27 +1,33 @@
 import { SetupContractConfig } from "@latticexyz/std-client";
 import { burnerWallet } from "./burnerWallet";
-import { supportedChains } from "./supportedChains";
+
+import latticeTestnet from "./supportedChains/latticeTestnet";
+import latestLatticeTestnetDeploy from "../../../contracts/deploys/4242/latest.json";
+import localhost from "./supportedChains/localhost";
+import latestLocalhostDeploy from "../../../contracts/deploys/31337/latest.json";
 
 type NetworkConfig = SetupContractConfig & {
   privateKey: string;
+  modeUrl?: string;
   faucetServiceUrl?: string;
 };
 
 export async function getNetworkConfig(): Promise<NetworkConfig> {
   const params = new URLSearchParams(window.location.search);
 
+  const supportedChains = [localhost, latticeTestnet];
+  const deploys = [latestLocalhostDeploy, latestLatticeTestnetDeploy];
+
   const chainId = Number(
     params.get("chainId") || import.meta.env.VITE_CHAIN_ID
   );
-  const chain = supportedChains.find((c) => c.id === chainId);
+  const chainIndex = supportedChains.findIndex((c) => c.id === chainId);
+  const chain = supportedChains[chainIndex];
   if (!chain) {
     throw new Error(`Chain ${chainId} not found`);
   }
 
-  const deploy = await import(
-    `../../../contracts/deploys/${chainId}/latest.json`
-  );
-
+  const deploy = deploys[chainIndex];
   if (!deploy) {
     throw new Error(
       `No deployment found for chain ${chainId}. Did you run \`mud deploy\`?`
@@ -46,15 +52,8 @@ export async function getNetworkConfig(): Promise<NetworkConfig> {
     },
     privateKey: burnerWallet().value,
     chainId,
-    faucetServiceUrl:
-      params.get("faucet") ?? chainId === 4242
-        ? "https://faucet.testnet-mud-services.linfra.xyz"
-        : undefined,
-    snapshotServiceUrl:
-      params.get("snapshot") ?? chainId === 4242
-        ? "https://ecs-snapshot.testnet-mud-services.linfra.xyz"
-        : undefined,
-    // TODO: add mode
+    modeUrl: params.get("mode") ?? chain.modeUrl,
+    faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
     worldAddress,
     initialBlockNumber:
       Number(params.get("initialBlockNumber")) || deploy.blockNumber || 0,

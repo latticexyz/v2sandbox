@@ -14,7 +14,6 @@ export const GameBoard = () => {
   const {
     components: { Encounter, Position, Player },
     playerEntity,
-    worldContract,
     api: { spawn },
   } = useMUD();
 
