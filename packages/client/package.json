@@ -15,8 +15,7 @@
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.29.0",
     "typescript": "^4.9.5",
-    "vite": "^3.2.3",
-    "vite-plugin-dynamic-import": "^1.2.7"
+    "vite": "^3.2.3"
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
