@@ -16,7 +16,7 @@
     "lint": "yarn prettier && yarn solhint",
     "tablegen": "mud tablegen",
     "worldgen": "mud worldgen",
-    "worldtypes": "rimraf types && (typechain --target=ethers-v5 out/IWorld.sol/IWorld.json || typechain --target=ethers-v5 out/world/IWorld.sol/IWorld.json)",
+    "worldtypes": "rimraf types && typechain --target=ethers-v5 out/IWorld.sol/IWorld.json",
     "tsgen": "mud tsgen --configPath mud.config.mts --out ../client/src/mud",
     "----- INTERNAL -----": "---------------------------",
     "prettier": "prettier --write 'src/**/*.sol'",
