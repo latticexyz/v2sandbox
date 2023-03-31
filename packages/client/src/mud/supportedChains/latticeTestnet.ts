@@ -1,4 +1,4 @@
-import { Chain } from "@wagmi/chains";
+import { MudChain } from "./types";
 
 const latticeTestnet = {
   name: "Lattice Testnet",
@@ -15,6 +15,7 @@ const latticeTestnet = {
       webSocket: ["wss://follower.testnet-chain.linfra.xyz"],
     },
   },
-} as const satisfies Chain;
+  modeUrl: "https://mode.testnet-mud-services.linfra.xyz",
+} as const satisfies MudChain;
 
 export default latticeTestnet;
