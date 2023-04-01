@@ -5,6 +5,7 @@ import { twMerge } from "tailwind-merge";
 import { useMUD } from "./MUDContext";
 import { useMapConfig } from "./useMapConfig";
 import { useKeyboardMovement } from "./useKeyboardMovement";
+import { EncounterScreen } from "./EncounterScreen";
 
 export const GameBoard = () => {
   const { width, height, terrainValues } = useMapConfig();
@@ -21,9 +22,7 @@ export const GameBoard = () => {
 
   const playerPosition = useComponentValue(Position, playerEntity);
   const canSpawn = useComponentValue(Player, playerEntity)?.value !== true;
-  const encounterId = useComponentValue(Encounter, playerEntity)?.value as
-    | EntityID
-    | undefined;
+  const encounter = useComponentValue(Encounter, playerEntity);
 
   const otherPlayers = useEntityQuery([Has(Player), Has(Position)])
     .filter((entity) => entity !== playerEntity)
@@ -38,10 +37,10 @@ export const GameBoard = () => {
   const [showEncounter, setShowEncounter] = useState(false);
   // Reset show encounter when we leave encounter
   useEffect(() => {
-    if (!encounterId) {
+    if (!encounter) {
       setShowEncounter(false);
     }
-  }, [encounterId]);
+  }, [encounter]);
 
   return (
     <div className="inline-grid p-2 bg-lime-500 relative overflow-hidden">
@@ -74,7 +73,7 @@ export const GameBoard = () => {
                 }
               }}
             >
-              {hasPlayer && encounterId ? (
+              {hasPlayer && encounter ? (
                 <div
                   className="absolute z-10 animate-battle"
                   style={{
@@ -102,6 +101,20 @@ export const GameBoard = () => {
           );
         })
       )}
+
+      {encounter && showEncounter ? (
+        <div
+          className="relative z-10 -m-2 bg-black text-white flex items-center justify-center"
+          style={{
+            gridColumnStart: 1,
+            gridColumnEnd: width + 1,
+            gridRowStart: 1,
+            gridRowEnd: height + 1,
+          }}
+        >
+          <EncounterScreen monsterIds={encounter.monsters} />
+        </div>
+      ) : null}
     </div>
   );
 };

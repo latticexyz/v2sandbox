@@ -3,17 +3,23 @@ pragma solidity >=0.8.0;
 import { System } from "@latticexyz/world/src/System.sol";
 import { Position } from "../tables/Position.sol";
 import { Player } from "../tables/Player.sol";
+import { Encounter } from "../tables/Encounter.sol";
 import { Movable } from "../tables/Movable.sol";
 import { Obstruction } from "../tables/Obstruction.sol";
 import { Encounterable } from "../tables/Encounterable.sol";
+import { EncounterTrigger } from "../tables/EncounterTrigger.sol";
 import { MapConfig } from "../tables/MapConfig.sol";
+import { Monster } from "../tables/Monster.sol";
+import { MonsterType } from "../Types.sol";
 import { addressToEntityKey } from "../addressToEntityKey.sol";
 import { positionToEntityKey } from "../positionToEntityKey.sol";
 
 contract MapSystem is System {
+  uint256 internal entropyNonce = 0;
+
   function spawn(uint32 x, uint32 y) public {
     bytes32 player = addressToEntityKey(address(_msgSender()));
-    require(Player.get(player) == false, "already spawned");
+    require(!Player.get(player), "already spawned");
 
     // Constrain position to map size, wrapping around if necessary
     (uint32 width, uint32 height, ) = MapConfig.get();
@@ -21,7 +27,7 @@ contract MapSystem is System {
     y = y + (height % height);
 
     bytes32 position = positionToEntityKey(x, y);
-    require(Obstruction.get(position) == false, "this space is obstructed");
+    require(!Obstruction.get(position), "this space is obstructed");
 
     Player.set(player, true);
     Position.set(player, x, y);
@@ -30,31 +36,32 @@ contract MapSystem is System {
   }
 
   function move(uint32 x, uint32 y) public {
-    bytes32 entity = addressToEntityKey(address(_msgSender()));
-    require(Movable.get(entity) == true, "cannot move");
+    bytes32 player = addressToEntityKey(address(_msgSender()));
+    require(Movable.get(player), "cannot move");
 
-    (uint32 fromX, uint32 fromY) = Position.get(entity);
+    (uint32 fromX, uint32 fromY) = Position.get(player);
     require(distance(fromX, fromY, x, y) == 1, "can only move to adjacent spaces");
 
-    // EncounterComponent encounter = EncounterComponent(getAddressById(components, EncounterComponentID));
-    // require(!encounter.has(entityId), "cannot move during an encounter");
+    uint256 actionCount = Encounter.getActionCount(player);
+    require(actionCount == 0, "cannot move during an encounter");
 
     // Constrain position to map size, wrapping around if necessary
     (uint32 width, uint32 height, ) = MapConfig.get();
     x = x + (width % width);
     y = y + (height % height);
 
-    // require(LibMap.obstructions(world, coord).length == 0, "this space is obstructed");
+    bytes32 position = positionToEntityKey(x, y);
+    require(!Obstruction.get(position), "this space is obstructed");
 
-    Position.set(entity, x, y);
+    Position.set(player, x, y);
 
-    // if (canTriggerEncounter(entityId, coord)) {
-    //   // 20% chance to trigger encounter
-    //   uint256 rand = uint256(keccak256(abi.encode(++entropyNonce, entityId, coord, block.difficulty)));
-    //   if (rand % 5 == 0) {
-    //     startEncounter(entityId);
-    //   }
-    // }
+    // TODO: move to EncounterSystem?
+    if (Encounterable.get(player) && EncounterTrigger.get(position)) {
+      uint256 rand = uint256(keccak256(abi.encode(++entropyNonce, player, position, block.difficulty)));
+      if (rand % 5 == 0) {
+        startEncounter(player);
+      }
+    }
   }
 
   function distance(uint32 fromX, uint32 fromY, uint32 toX, uint32 toY) internal pure returns (uint32) {
@@ -63,25 +70,14 @@ contract MapSystem is System {
     return deltaX + deltaY;
   }
 
-  // function canTriggerEncounter(uint256 entityId, Coord memory coord) internal view returns (bool) {
-  //   return
-  //     // Check if entity can be encountered
-  //     EncounterableComponent(getAddressById(components, EncounterableComponentID)).has(entityId) &&
-  //     // Check if there are any encounter triggers at the entity's position
-  //     LibMap.encounterTriggers(world, coord).length > 0;
-  // }
+  // TODO: move to EncounterSystem?
+  function startEncounter(bytes32 player) internal {
+    bytes32 monster = keccak256(abi.encode(++entropyNonce, player, block.difficulty));
+    MonsterType monsterType = MonsterType((uint256(monster) % uint256(type(MonsterType).max)) + 1);
+    Monster.set(monster, monsterType);
 
-  // function startEncounter(uint256 entityId) internal returns (uint256) {
-  //   uint256 encounterId = world.getUniqueEntityId();
-  //   EncounterComponent encounter = EncounterComponent(getAddressById(components, EncounterComponentID));
-  //   encounter.set(entityId, encounterId);
-
-  //   uint256 monsterId = world.getUniqueEntityId();
-  //   uint256 rand = uint256(keccak256(abi.encode(++entropyNonce, entityId, encounterId, monsterId, block.difficulty)));
-  //   MonsterType monsterType = MonsterType((rand % uint256(type(MonsterType).max)) + 1);
-  //   MonsterTypeComponent(getAddressById(components, MonsterTypeComponentID)).set(monsterId, monsterType);
-  //   encounter.set(monsterId, encounterId);
-
-  //   return encounterId;
-  // }
+    bytes32[] memory monsters = new bytes32[](1);
+    monsters[0] = monster;
+    Encounter.set(player, 1, monsters);
+  }
 }

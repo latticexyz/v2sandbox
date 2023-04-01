@@ -1,10 +1,16 @@
 import { setupMUDV2Network } from "@latticexyz/std-client";
-import { createFastTxExecutor, createFaucetService } from "@latticexyz/network";
+import {
+  createFastTxExecutor,
+  createFaucetService,
+  normalizeEntityID,
+} from "@latticexyz/network";
 import { getNetworkConfig } from "./getNetworkConfig";
 import { defineContractComponents } from "./contractComponents";
 import { clientComponents } from "./clientComponents";
 import { world } from "./world";
 import {
+  EntityID,
+  EntityIndex,
   getComponentValue,
   Has,
   HasValue,
@@ -15,6 +21,7 @@ import { awaitStreamValue, uuid } from "@latticexyz/utils";
 import { Contract, Signer, utils } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 import { IWorld__factory } from "../../../contracts/types/ethers-contracts/factories/IWorld__factory";
+import { extractContractError } from "./extractContractError";
 
 export type SetupResult = Awaited<ReturnType<typeof setup>>;
 
@@ -85,8 +92,13 @@ export async function setup() {
       if (!fastTxExecutor) {
         throw new Error("no signer");
       }
-      const { tx } = await fastTxExecutor.fastTxExecute(contract, ...args);
-      return await tx;
+      try {
+        const { tx } = await fastTxExecutor.fastTxExecute(contract, ...args);
+        return await tx;
+      } catch (error) {
+        console.error(extractContractError(worldContract, error));
+        throw error;
+      }
     };
   }
 
@@ -133,9 +145,10 @@ export async function setup() {
       return;
     }
 
-    const inEncounter =
-      getComponentValue(components.Encounter, result.playerEntity)?.value !=
-      null;
+    const inEncounter = !!getComponentValue(
+      components.Encounter,
+      result.playerEntity
+    );
     if (inEncounter) {
       console.warn("cannot move while in encounter");
       return;
@@ -212,6 +225,44 @@ export async function setup() {
     }
   };
 
+  const throwBall = async () => {
+    const player = result.playerEntity;
+    if (!player) {
+      throw new Error("no player");
+    }
+
+    const encounter = getComponentValue(components.Encounter, player);
+    if (!encounter) {
+      throw new Error("no encounter");
+    }
+
+    const tx = await worldSend("throwBall", []);
+    await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
+
+    const hasCaught = encounter.monsters.some((monsterId) => {
+      const monster = world.entityToIndex.get(monsterId as EntityID);
+      const owner =
+        monster && getComponentValue(components.OwnedBy, monster)?.value;
+      return (
+        monster && owner && normalizeEntityID(owner) === world.entities[player]
+      );
+    });
+    if (hasCaught) {
+      return "caught";
+    }
+
+    if (!getComponentValue(components.Encounter, player)) {
+      return "fled";
+    }
+
+    return "miss";
+  };
+
+  const fleeEncounter = async () => {
+    const tx = await worldSend("flee", []);
+    await awaitStreamValue(result.txReduced$, (txHash) => txHash === tx.hash);
+  };
+
   return {
     ...result,
     components,
@@ -222,6 +273,8 @@ export async function setup() {
       moveTo,
       moveBy,
       spawn,
+      throwBall,
+      fleeEncounter,
     },
   };
 }

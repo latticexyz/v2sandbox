@@ -7,25 +7,21 @@ export default mudConfig({
     TerrainType: ["None", "TallGrass", "Boulder"],
   },
   tables: {
-    Counter: {
-      storeArgument: true,
-      schema: "uint256",
-    },
+    Counter: "uint256",
     Encounter: {
-      storeArgument: true,
-      schema: "uint256",
+      dataStruct: false,
+      primaryKeys: {
+        player: "bytes32",
+      },
+      schema: {
+        actionCount: "uint256",
+        monsters: "bytes32[]",
+      },
     },
-    EncounterTrigger: {
-      storeArgument: true,
-      schema: "bool",
-    },
-    Encounterable: {
-      storeArgument: true,
-      schema: "bool",
-    },
+    EncounterTrigger: "bool",
+    Encounterable: "bool",
     MapConfig: {
       primaryKeys: {},
-      storeArgument: true,
       dataStruct: false,
       schema: {
         width: "uint32",
@@ -33,28 +29,12 @@ export default mudConfig({
         terrain: "bytes",
       },
     },
-    Monster: {
-      storeArgument: true,
-      schema: "MonsterType",
-    },
-    Movable: {
-      storeArgument: true,
-      schema: "bool",
-    },
-    Obstruction: {
-      storeArgument: true,
-      schema: "bool",
-    },
-    OwnedBy: {
-      storeArgument: true,
-      schema: "bytes32",
-    },
-    Player: {
-      storeArgument: true,
-      schema: "bool",
-    },
+    Monster: "MonsterType",
+    Movable: "bool",
+    Obstruction: "bool",
+    OwnedBy: "bytes32",
+    Player: "bool",
     Position: {
-      storeArgument: true,
       dataStruct: false,
       schema: {
         x: "uint32",

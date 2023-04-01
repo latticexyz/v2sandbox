@@ -23,8 +23,9 @@ uint256 constant EncounterTableId = _tableId;
 library Encounter {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](1);
+    SchemaType[] memory _schema = new SchemaType[](2);
     _schema[0] = SchemaType.UINT256;
+    _schema[1] = SchemaType.BYTES32_ARRAY;
 
     return SchemaLib.encode(_schema);
   }
@@ -38,8 +39,9 @@ library Encounter {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](1);
-    _fieldNames[0] = "value";
+    string[] memory _fieldNames = new string[](2);
+    _fieldNames[0] = "actionCount";
+    _fieldNames[1] = "monsters";
     return ("Encounter", _fieldNames);
   }
 
@@ -65,57 +67,164 @@ library Encounter {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
-  /** Get value */
-  function get(bytes32 key) internal view returns (uint256 value) {
+  /** Get actionCount */
+  function getActionCount(bytes32 player) internal view returns (uint256 actionCount) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Get value (using the specified store) */
-  function get(IStore _store, bytes32 key) internal view returns (uint256 value) {
+  /** Get actionCount (using the specified store) */
+  function getActionCount(IStore _store, bytes32 player) internal view returns (uint256 actionCount) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Set value */
-  function set(bytes32 key, uint256 value) internal {
+  /** Set actionCount */
+  function setActionCount(bytes32 player, uint256 actionCount) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((actionCount)));
   }
 
-  /** Set value (using the specified store) */
-  function set(IStore _store, bytes32 key, uint256 value) internal {
+  /** Set actionCount (using the specified store) */
+  function setActionCount(IStore _store, bytes32 player, uint256 actionCount) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
-    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((value)));
+    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((actionCount)));
+  }
+
+  /** Get monsters */
+  function getMonsters(bytes32 player) internal view returns (bytes32[] memory monsters) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 1);
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_bytes32());
+  }
+
+  /** Get monsters (using the specified store) */
+  function getMonsters(IStore _store, bytes32 player) internal view returns (bytes32[] memory monsters) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 1);
+    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_bytes32());
+  }
+
+  /** Set monsters */
+  function setMonsters(bytes32 player, bytes32[] memory monsters) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 1, EncodeArray.encode((monsters)));
+  }
+
+  /** Set monsters (using the specified store) */
+  function setMonsters(IStore _store, bytes32 player, bytes32[] memory monsters) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    _store.setField(_tableId, _primaryKeys, 1, EncodeArray.encode((monsters)));
+  }
+
+  /** Push an element to monsters */
+  function pushMonsters(bytes32 player, bytes32 _element) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    StoreSwitch.pushToField(_tableId, _primaryKeys, 1, abi.encodePacked((_element)));
+  }
+
+  /** Push an element to monsters (using the specified store) */
+  function pushMonsters(IStore _store, bytes32 player, bytes32 _element) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    _store.pushToField(_tableId, _primaryKeys, 1, abi.encodePacked((_element)));
+  }
+
+  /** Get the full data */
+  function get(bytes32 player) internal view returns (uint256 actionCount, bytes32[] memory monsters) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    bytes memory _blob = StoreSwitch.getRecord(_tableId, _primaryKeys, getSchema());
+    return decode(_blob);
+  }
+
+  /** Get the full data (using the specified store) */
+  function get(IStore _store, bytes32 player) internal view returns (uint256 actionCount, bytes32[] memory monsters) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    bytes memory _blob = _store.getRecord(_tableId, _primaryKeys, getSchema());
+    return decode(_blob);
+  }
+
+  /** Set the full data using individual values */
+  function set(bytes32 player, uint256 actionCount, bytes32[] memory monsters) internal {
+    bytes memory _data = encode(actionCount, monsters);
+
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    StoreSwitch.setRecord(_tableId, _primaryKeys, _data);
+  }
+
+  /** Set the full data using individual values (using the specified store) */
+  function set(IStore _store, bytes32 player, uint256 actionCount, bytes32[] memory monsters) internal {
+    bytes memory _data = encode(actionCount, monsters);
+
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32((player));
+
+    _store.setRecord(_tableId, _primaryKeys, _data);
+  }
+
+  /** Decode the tightly packed blob using this table's schema */
+  function decode(bytes memory _blob) internal view returns (uint256 actionCount, bytes32[] memory monsters) {
+    // 32 is the total byte length of static data
+    PackedCounter _encodedLengths = PackedCounter.wrap(Bytes.slice32(_blob, 32));
+
+    actionCount = (uint256(Bytes.slice32(_blob, 0)));
+
+    uint256 _start;
+    uint256 _end = 64;
+
+    _start = _end;
+    _end += _encodedLengths.atIndex(0);
+    monsters = (SliceLib.getSubslice(_blob, _start, _end).decodeArray_bytes32());
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint256 value) internal view returns (bytes memory) {
-    return abi.encodePacked(value);
+  function encode(uint256 actionCount, bytes32[] memory monsters) internal view returns (bytes memory) {
+    uint16[] memory _counters = new uint16[](1);
+    _counters[0] = uint16(monsters.length * 32);
+    PackedCounter _encodedLengths = PackedCounterLib.pack(_counters);
+
+    return abi.encodePacked(actionCount, _encodedLengths.unwrap(), EncodeArray.encode((monsters)));
   }
 
   /* Delete all data for given keys */
-  function deleteRecord(bytes32 key) internal {
+  function deleteRecord(bytes32 player) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
     StoreSwitch.deleteRecord(_tableId, _primaryKeys);
   }
 
   /* Delete all data for given keys (using the specified store) */
-  function deleteRecord(IStore _store, bytes32 key) internal {
+  function deleteRecord(IStore _store, bytes32 player) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
-    _primaryKeys[0] = bytes32((key));
+    _primaryKeys[0] = bytes32((player));
 
     _store.deleteRecord(_tableId, _primaryKeys);
   }

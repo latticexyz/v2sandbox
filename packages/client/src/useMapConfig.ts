@@ -13,7 +13,7 @@ export const useMapConfig = () => {
 
   if (mapConfig == null) {
     throw new Error(
-      "game config not set or not ready, only use this hook after loading state === LIVE"
+      "map config not set or not ready, only use this hook after loading state === LIVE"
     );
   }
 

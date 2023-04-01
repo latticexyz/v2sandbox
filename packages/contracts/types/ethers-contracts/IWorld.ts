@@ -32,6 +32,7 @@ export interface IWorldInterface extends utils.Interface {
     "call(bytes16,bytes16,bytes)": FunctionFragment;
     "deleteRecord(uint256,bytes32[])": FunctionFragment;
     "deleteRecord(bytes16,bytes16,bytes32[])": FunctionFragment;
+    "flee()": FunctionFragment;
     "getField(uint256,bytes32[],uint8)": FunctionFragment;
     "getKeySchema(uint256)": FunctionFragment;
     "getRecord(uint256,bytes32[],bytes32)": FunctionFragment;
@@ -54,6 +55,7 @@ export interface IWorldInterface extends utils.Interface {
     "setRecord(bytes16,bytes16,bytes32[],bytes)": FunctionFragment;
     "setRecord(uint256,bytes32[],bytes)": FunctionFragment;
     "spawn(uint32,uint32)": FunctionFragment;
+    "throwBall()": FunctionFragment;
   };
 
   getFunction(
@@ -61,6 +63,7 @@ export interface IWorldInterface extends utils.Interface {
       | "call"
       | "deleteRecord(uint256,bytes32[])"
       | "deleteRecord(bytes16,bytes16,bytes32[])"
+      | "flee"
       | "getField"
       | "getKeySchema"
       | "getRecord(uint256,bytes32[],bytes32)"
@@ -83,6 +86,7 @@ export interface IWorldInterface extends utils.Interface {
       | "setRecord(bytes16,bytes16,bytes32[],bytes)"
       | "setRecord(uint256,bytes32[],bytes)"
       | "spawn"
+      | "throwBall"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -105,6 +109,7 @@ export interface IWorldInterface extends utils.Interface {
       PromiseOrValue<BytesLike>[]
     ]
   ): string;
+  encodeFunctionData(functionFragment: "flee", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getField",
     values: [
@@ -245,6 +250,7 @@ export interface IWorldInterface extends utils.Interface {
     functionFragment: "spawn",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
+  encodeFunctionData(functionFragment: "throwBall", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
   decodeFunctionResult(
@@ -255,6 +261,7 @@ export interface IWorldInterface extends utils.Interface {
     functionFragment: "deleteRecord(bytes16,bytes16,bytes32[])",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "flee", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getField", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getKeySchema",
@@ -328,6 +335,7 @@ export interface IWorldInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "spawn", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "throwBall", data: BytesLike): Result;
 
   events: {
     "StoreDeleteRecord(uint256,bytes32[])": EventFragment;
@@ -421,6 +429,10 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       key: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    flee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -568,6 +580,10 @@ export interface IWorld extends BaseContract {
       y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    throwBall(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   call(
@@ -587,6 +603,10 @@ export interface IWorld extends BaseContract {
     namespace: PromiseOrValue<BytesLike>,
     file: PromiseOrValue<BytesLike>,
     key: PromiseOrValue<BytesLike>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  flee(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -735,6 +755,10 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  throwBall(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     call(
       namespace: PromiseOrValue<BytesLike>,
@@ -755,6 +779,8 @@ export interface IWorld extends BaseContract {
       key: PromiseOrValue<BytesLike>[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    flee(overrides?: CallOverrides): Promise<void>;
 
     getField(
       table: PromiseOrValue<BigNumberish>,
@@ -900,6 +926,8 @@ export interface IWorld extends BaseContract {
       y: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    throwBall(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -952,6 +980,10 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       key: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    flee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1099,6 +1131,10 @@ export interface IWorld extends BaseContract {
       y: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    throwBall(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1119,6 +1155,10 @@ export interface IWorld extends BaseContract {
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       key: PromiseOrValue<BytesLike>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    flee(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -1264,6 +1304,10 @@ export interface IWorld extends BaseContract {
     spawn(
       x: PromiseOrValue<BigNumberish>,
       y: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    throwBall(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
