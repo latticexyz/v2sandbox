@@ -5,6 +5,23 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
+    BoxTable: (() => {
+      const tableId = new TableId("", "box");
+      return defineComponent(
+        world,
+        {
+          width: RecsType.Number,
+          height: RecsType.Number,
+          depth: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     PositionTable: (() => {
       const tableId = new TableId("", "position");
       return defineComponent(
@@ -13,6 +30,21 @@ export function defineContractComponents(world: World) {
           x: RecsType.Number,
           y: RecsType.Number,
           z: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    PlayerTable: (() => {
+      const tableId = new TableId("", "player");
+      return defineComponent(
+        world,
+        {
+          flag: RecsType.Boolean,
         },
         {
           metadata: {

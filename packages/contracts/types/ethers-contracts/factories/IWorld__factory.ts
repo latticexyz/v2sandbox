@@ -365,11 +365,6 @@ const _abi = [
       },
       {
         internalType: "int32",
-        name: "y",
-        type: "int32",
-      },
-      {
-        internalType: "int32",
         name: "z",
         type: "int32",
       },
@@ -436,6 +431,13 @@ const _abi = [
       },
     ],
     name: "pushToField",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "register",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -635,6 +637,44 @@ const _abi = [
       },
     ],
     name: "setRecord",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "int32[]",
+        name: "xs",
+        type: "int32[]",
+      },
+      {
+        internalType: "int32[]",
+        name: "ys",
+        type: "int32[]",
+      },
+      {
+        internalType: "int32[]",
+        name: "zs",
+        type: "int32[]",
+      },
+      {
+        internalType: "int32[]",
+        name: "ws",
+        type: "int32[]",
+      },
+      {
+        internalType: "int32[]",
+        name: "hs",
+        type: "int32[]",
+      },
+      {
+        internalType: "int32[]",
+        name: "ds",
+        type: "int32[]",
+      },
+    ],
+    name: "upload",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
