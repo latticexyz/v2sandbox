@@ -17,7 +17,8 @@
     "@vitejs/plugin-react": "^3.1.0",
     "eslint": "^8.29.0",
     "typescript": "^4.9.5",
-    "vite": "^3.2.3"
+    "vite": "^3.2.3",
+    "@types/three": "^0.149.0"
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
@@ -30,6 +31,7 @@
     "@latticexyz/utils": "2.0.0-alpha.53",
     "@latticexyz/world": "2.0.0-alpha.53",
     "@latticexyz/react": "2.0.0-alpha.53",
+    "@react-three/fiber": "^8.12.0",
     "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",
     "ethers": "^5.7.2",
@@ -42,6 +44,7 @@
     "rxjs": "^7.5.5",
     "react-dom": "^18.2.0",
     "threads": "^1.7.0",
-    "viem": "^0.1.25"
+    "viem": "^0.1.25",
+    "three": "^0.150.1"
   }
 }

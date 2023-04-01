@@ -314,19 +314,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "increment",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "contract IModule",
@@ -367,6 +354,29 @@ const _abi = [
     name: "isStore",
     outputs: [],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "int32",
+        name: "x",
+        type: "int32",
+      },
+      {
+        internalType: "int32",
+        name: "y",
+        type: "int32",
+      },
+      {
+        internalType: "int32",
+        name: "z",
+        type: "int32",
+      },
+    ],
+    name: "move",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
