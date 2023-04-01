@@ -1,26 +1,28 @@
+import { createNoise2D } from "simplex-noise";
 import { Tileset } from "../../../artTypes/world";
 import { PhaserLayer } from "../createPhaserLayer";
 
 export function createMapSystem(layer: PhaserLayer) {
+  const noise2D = createNoise2D();
   const {
     scenes: {
       Main: {
         maps: {
-          Main: {
-            putTileAt,
-          }
-        }
-      }
-    }
+          Main: { putTileAt },
+        },
+      },
+    },
   } = layer;
 
-  for(let x = 0; x < 10; x++) {
-    for(let y = 0; y < 10; y++) {
-      const coord = { x,y };
-      const randomTile = Phaser.Math.RND.between(0, 2);
+  for (let x = -100; x < 100; x++) {
+    for (let y = -100; y < 100; y++) {
+      const noise = noise2D(x, y);
 
-      putTileAt(coord, randomTile, "Foreground");
-      putTileAt(coord, Tileset.Grass, "Background");
+      if (noise > 0.5) {
+        putTileAt({ x, y }, Tileset.Mountains, "Foreground");
+      } else if (noise < -0.5) {
+        putTileAt({ x, y }, Tileset.Forest, "Foreground");
+      }
     }
   }
 }

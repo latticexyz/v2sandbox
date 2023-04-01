@@ -1,9 +1,12 @@
 import React from "react";
 import { useStore } from "../store";
-import { Controls } from "./Controls";
-import { Counter } from "./Counter";
+import { AdminControls } from "./AdminControls";
 import { ECSBrowser } from "./ECSBrowser";
+import { Header } from "./Header";
+import { Leaderboard } from "./Leaderboard";
 import { LoadingScreen } from "./LoadingScreen";
+import { PlayerBar } from "./PlayerBar";
+import { Spawn } from "./Spawn";
 import { Wrapper } from "./Wrapper";
 
 export const UIRoot = () => {
@@ -19,10 +22,16 @@ export const UIRoot = () => {
   return (
     <Wrapper>
       <LoadingScreen />
-      <ECSBrowser />
-      <Controls />
+      <AdminControls />
 
-      <Counter />
+      <Header />
+
+      <Leaderboard />
+
+      <PlayerBar />
+      <Spawn />
+
+      <ECSBrowser />
     </Wrapper>
   );
 };

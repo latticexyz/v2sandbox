@@ -7,7 +7,6 @@
     "generate-multiatlas-sprites": "node ./scripts/cli.js --project ./config-sprites.json",
     "compile-extensions": "tsc ./tiled/extensions/*.ts --outDir ./tiled/extensions/",
     "export-tiled-types": "ts-node ./scripts/export-tiled-types.ts && cp tilesets/images/* ../client/public/assets/tilesets/",
-
     "export": "yarn generate-multiatlas-sprites && yarn export-tiled-types"
   },
   "devDependencies": {
@@ -21,7 +20,8 @@
     "glob": "^8.0.3",
     "ts-node": "^10.8.2",
     "typescript": "^4.7.4",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "optimist": "^0.6.1"
   },
   "dependencies": {}
 }

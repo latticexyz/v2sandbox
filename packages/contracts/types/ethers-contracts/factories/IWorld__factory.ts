@@ -314,19 +314,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "increment",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "contract IModule",
@@ -367,6 +354,67 @@ const _abi = [
     name: "isStore",
     outputs: [],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "defender",
+        type: "bytes32",
+      },
+    ],
+    name: "mud_CombatSystem_engage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "mud_CombatSystem_heal",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "int32",
+        name: "x",
+        type: "int32",
+      },
+      {
+        internalType: "int32",
+        name: "y",
+        type: "int32",
+      },
+    ],
+    name: "mud_MoveSystem_move",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "id",
+        type: "uint32",
+      },
+      {
+        internalType: "int32",
+        name: "x",
+        type: "int32",
+      },
+      {
+        internalType: "int32",
+        name: "y",
+        type: "int32",
+      },
+    ],
+    name: "mud_PlayerSystem_spawn",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
