@@ -3,11 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>a minimal MUD client</title>
+    <title>MUD2 2D Game Starter Kit</title>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+    </style>
   </head>
   <body>
-    <script type="module" src="/src/index.ts"></script>
-    <div>Counter: <span id="counter">??</span></div>
-    <button onclick="window.increment()">Increment</button>
+    <div id="react-root"></div>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

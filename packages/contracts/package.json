@@ -9,7 +9,7 @@
     "devnode": "mud devnode",
     "build": "forge clean && forge build",
     "test": "mud test-v2",
-    "dev": "yarn deploy",
+    "dev": "yarn deploy && node ./openDevUrl.js",
     "deploy": "yarn initialize && mud deploy-v2",
     "deploy:testnet": "yarn initialize && mud deploy-v2 --profile=lattice-testnet",
     "----- INTERNAL -----": "---------------------------",
