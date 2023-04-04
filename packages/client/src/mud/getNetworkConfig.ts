@@ -1,5 +1,4 @@
-import { SetupContractConfig } from "@latticexyz/std-client";
-import { burnerWallet } from "./burnerWallet";
+import { SetupContractConfig, getBurnerWallet } from "@latticexyz/std-client";
 
 import latticeTestnet from "./supportedChains/latticeTestnet";
 import latestLatticeTestnetDeploy from "../../../contracts/deploys/4242/latest.json";
@@ -49,7 +48,7 @@ export async function getNetworkConfig(): Promise<NetworkConfig> {
       jsonRpcUrl: params.get("rpc") ?? chain.rpcUrls.default.http[0],
       wsRpcUrl: params.get("wsRpc") ?? chain.rpcUrls.default.webSocket?.[0],
     },
-    privateKey: burnerWallet().value,
+    privateKey: getBurnerWallet().value,
     chainId,
     modeUrl: params.get("mode") ?? chain.modeUrl,
     faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
