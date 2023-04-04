@@ -19,14 +19,14 @@
   },
   "dependencies": {
     "@improbable-eng/grpc-web": "^0.15.0",
-    "@latticexyz/cli": "2.0.0-alpha.53",
-    "@latticexyz/network": "2.0.0-alpha.53",
-    "@latticexyz/recs": "2.0.0-alpha.53",
-    "@latticexyz/schema-type": "2.0.0-alpha.53",
-    "@latticexyz/services": "2.0.0-alpha.53",
-    "@latticexyz/std-client": "2.0.0-alpha.53",
-    "@latticexyz/utils": "2.0.0-alpha.53",
-    "@latticexyz/world": "2.0.0-alpha.53",
+    "@latticexyz/cli": "2.0.0-alpha.75",
+    "@latticexyz/network": "2.0.0-alpha.75",
+    "@latticexyz/recs": "2.0.0-alpha.75",
+    "@latticexyz/schema-type": "2.0.0-alpha.75",
+    "@latticexyz/services": "2.0.0-alpha.75",
+    "@latticexyz/std-client": "2.0.0-alpha.75",
+    "@latticexyz/utils": "2.0.0-alpha.75",
+    "@latticexyz/world": "2.0.0-alpha.75",
     "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",
     "ethers": "^5.7.2",
@@ -38,6 +38,6 @@
     "react": "^18.2.0",
     "rxjs": "^7.5.5",
     "threads": "^1.7.0",
-    "viem": "^0.1.25"
+    "viem": "^0.2.0"
   }
 }
