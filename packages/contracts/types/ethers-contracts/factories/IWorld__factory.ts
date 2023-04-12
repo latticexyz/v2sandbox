@@ -8,6 +8,189 @@ import type { IWorld, IWorldInterface } from "../IWorld";
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+    ],
+    name: "AccessDenied",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "functionSelector",
+        type: "bytes4",
+      },
+    ],
+    name: "FunctionSelectorExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "functionSelector",
+        type: "bytes4",
+      },
+    ],
+    name: "FunctionSelectorNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "InvalidSelector",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "module",
+        type: "string",
+      },
+    ],
+    name: "ModuleAlreadyInstalled",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "ResourceExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "ResourceNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "length",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "received",
+        type: "uint256",
+      },
+    ],
+    name: "StoreCore_DataIndexOverflow",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "expected",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "received",
+        type: "uint256",
+      },
+    ],
+    name: "StoreCore_InvalidDataLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "expected",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "received",
+        type: "uint256",
+      },
+    ],
+    name: "StoreCore_InvalidFieldNamesLength",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "StoreCore_NotDynamicField",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "StoreCore_NotImplemented",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tableId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "tableIdString",
+        type: "string",
+      },
+    ],
+    name: "StoreCore_TableAlreadyExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tableId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "tableIdString",
+        type: "string",
+      },
+    ],
+    name: "StoreCore_TableNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "system",
+        type: "address",
+      },
+    ],
+    name: "SystemExists",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -108,7 +291,7 @@ const _abi = [
         type: "bytes",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -625,6 +808,77 @@ const _abi = [
       },
     ],
     name: "setRecord",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "table",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "key",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "uint8",
+        name: "schemaIndex",
+        type: "uint8",
+      },
+      {
+        internalType: "uint256",
+        name: "startByteIndex",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "dataToSet",
+        type: "bytes",
+      },
+    ],
+    name: "updateInField",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes16",
+        name: "namespace",
+        type: "bytes16",
+      },
+      {
+        internalType: "bytes16",
+        name: "file",
+        type: "bytes16",
+      },
+      {
+        internalType: "bytes32[]",
+        name: "key",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "uint8",
+        name: "schemaIndex",
+        type: "uint8",
+      },
+      {
+        internalType: "uint256",
+        name: "startByteIndex",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "dataToSet",
+        type: "bytes",
+      },
+    ],
+    name: "updateInField",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
