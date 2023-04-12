@@ -1,4 +1,4 @@
-import { mudConfig, resolveTableId } from "@latticexyz/cli";
+import { mudConfig, resolveTableId } from "@latticexyz/config";
 
 export default mudConfig({
   overrideSystems: {
