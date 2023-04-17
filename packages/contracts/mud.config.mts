@@ -3,13 +3,13 @@ import { mudConfig, resolveTableId } from "@latticexyz/config";
 export default mudConfig({
   overrideSystems: {
     IncrementSystem: {
-      fileSelector: "increment",
+      name: "increment",
       openAccess: true,
     },
   },
   tables: {
     CounterTable: {
-      fileSelector: "counter",
+      name: "counter",
       schema: {
         value: "uint32",
       },
